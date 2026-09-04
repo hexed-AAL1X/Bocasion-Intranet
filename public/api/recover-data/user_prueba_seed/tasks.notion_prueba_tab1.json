@@ -1,0 +1,86 @@
+[
+  {
+    "id": "task_prueba_t1_1",
+    "actividad": "Revisar informe semanal de tickets",
+    "fecha": "2026-05-05",
+    "estado": "Completado",
+    "casilla": true,
+    "base_estado_p1": "Completado",
+    "custom_prioridad_p1": "Alta",
+    "custom_notas_p1": "Enviar resumen al equipo antes del viernes",
+    "createdAt": "2026-04-28T09:15:00.000Z",
+    "updatedAt": "2026-05-05T14:22:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_2",
+    "actividad": "Actualizar contraseñas de acceso al sistema",
+    "fecha": "2026-05-08",
+    "estado": "Completado",
+    "casilla": true,
+    "base_estado_p1": "Completado",
+    "custom_prioridad_p1": "Alta",
+    "custom_notas_p1": "Rotar cada 3 meses según política interna",
+    "createdAt": "2026-04-29T10:00:00.000Z",
+    "updatedAt": "2026-05-08T11:05:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_3",
+    "actividad": "Documentar proceso de alta de usuarios",
+    "fecha": "2026-05-15",
+    "estado": "En progreso",
+    "casilla": false,
+    "base_estado_p1": "En progreso",
+    "custom_prioridad_p1": "Media",
+    "custom_notas_p1": "Ver plantilla compartida en Drive",
+    "createdAt": "2026-05-01T08:30:00.000Z",
+    "updatedAt": "2026-05-13T16:40:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_4",
+    "actividad": "Configurar alertas automáticas en el dashboard",
+    "fecha": "2026-05-20",
+    "estado": "Sin empezar",
+    "casilla": false,
+    "base_estado_p1": "Sin empezar",
+    "custom_prioridad_p1": "Media",
+    "custom_notas_p1": "",
+    "createdAt": "2026-05-02T09:00:00.000Z",
+    "updatedAt": "2026-05-02T09:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_5",
+    "actividad": "Validar datos del reporte de mayo",
+    "fecha": "2026-05-22",
+    "estado": "Sin empezar",
+    "casilla": false,
+    "base_estado_p1": "Sin empezar",
+    "custom_prioridad_p1": "Alta",
+    "custom_notas_p1": "Cruzar con el archivo de tickets cerrados",
+    "createdAt": "2026-05-06T11:20:00.000Z",
+    "updatedAt": "2026-05-06T11:20:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_6",
+    "actividad": "Coordinar capacitación de nuevo personal",
+    "fecha": "2026-05-12",
+    "estado": "Bloqueado",
+    "casilla": false,
+    "base_estado_p1": "Bloqueado",
+    "custom_prioridad_p1": "Baja",
+    "custom_notas_p1": "Esperando confirmación de RRHH",
+    "createdAt": "2026-05-03T14:00:00.000Z",
+    "updatedAt": "2026-05-11T09:30:00.000Z"
+  },
+  {
+    "id": "task_prueba_t1_7",
+    "actividad": "Subir actas de reunión a la carpeta compartida",
+    "fecha": "2026-05-07",
+    "estado": "Completado",
+    "casilla": true,
+    "base_estado_p1": "Completado",
+    "custom_prioridad_p1": "Baja",
+    "custom_notas_p1": "",
+    "createdAt": "2026-05-04T16:00:00.000Z",
+    "updatedAt": "2026-05-07T17:10:00.000Z"
+  }
+]

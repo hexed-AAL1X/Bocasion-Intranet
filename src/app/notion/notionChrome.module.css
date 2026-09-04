@@ -1,0 +1,614 @@
+/* ── Notion Tabs Bar ── */
+.notionTabsBar {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 62px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.notionTabsBar::-webkit-scrollbar {
+  display: none;
+}
+
+.notionTab,
+.notionTabActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 200px;
+  min-height: 34px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: all 150ms ease;
+  margin-bottom: -1px;
+}
+
+/* Título de pestaña + iconos de compartido (ellipsis solo en el texto) */
+.notionTabTitleCluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+
+.notionTabTitleText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notionTabShareIconIn {
+  flex-shrink: 0;
+  color: var(--accent);
+  opacity: 0.95;
+}
+
+.notionTabShareIconOut {
+  flex-shrink: 0;
+  color: var(--text-dim);
+  opacity: 0.85;
+}
+
+.notionTabIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.notionTabPinWrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.notionTabPinIcon {
+  font-size: 13px;
+  color: var(--primary);
+  opacity: 0.95;
+}
+
+.notionTabsPinDivider {
+  align-self: stretch;
+  width: 1px;
+  min-height: 22px;
+  margin: 6px 5px 8px;
+  background: color-mix(in srgb, var(--border) 85%, var(--primary) 15%);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.notionTabActive .notionTabIcon {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.notionTabActive {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+  border-bottom: 1px solid var(--card);
+  font-weight: 600;
+}
+
+.notionTabActive::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px 2px 0 0;
+}
+
+.notionTab:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
+}
+
+.notionTabDragging {
+  opacity: 0.82;
+  cursor: grabbing;
+}
+
+.tabDropIndicator {
+  align-self: stretch;
+  width: 3px;
+  min-height: 26px;
+  margin: 0 1px;
+  border-radius: 2px;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+.notionTabMenuTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin: 0 0 0 2px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: opacity 120ms ease, background 120ms ease;
+}
+
+.notionTab:hover .notionTabMenuTrigger,
+.notionTabActive .notionTabMenuTrigger {
+  opacity: 0.85;
+}
+
+.notionTabMenuTrigger:hover {
+  opacity: 1 !important;
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--text);
+}
+
+.notionTabMenuBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: transparent;
+}
+
+.notionTabMenu {
+  position: fixed;
+  z-index: 10001;
+  min-width: 216px;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.2);
+}
+
+.notionTabMenuHint {
+  margin: 0 8px 6px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+.notionTabMenuItem,
+.notionTabMenuItemDanger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.notionTabMenuItem:hover:not(:disabled) {
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.notionTabMenuItem:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.notionTabMenuItemDanger {
+  color: #b91c1c;
+}
+
+.notionTabMenuItemDanger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.notionTabClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0;
+  transition: all 120ms ease;
+  flex-shrink: 0;
+}
+
+.notionTab:hover .notionTabClose,
+.notionTabActive .notionTabClose {
+  opacity: 0.6;
+}
+
+.notionTabClose:hover {
+  opacity: 1 !important;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.notionTabAdd,
+.notionTabTrash,
+.notionTabHistory {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 32px;
+  min-height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 6px;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  margin-bottom: 1px;
+  position: relative;
+}
+
+.notionTabAdd:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+}
+
+.notionTabHistory {
+  margin-left: auto;
+}
+
+.notionTabHistory:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+}
+
+.notionTabTrash {
+  margin-left: 0;
+}
+
+.notionTabTrash:hover {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+}
+
+.trashBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+/* ── Confirm Dialog ── */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 150ms ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.confirmDialog {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 32px 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: slideUp 200ms ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.confirmDialog h3 {
+  margin: 12px 0 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.confirmDialog p {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.confirmIcon,
+.confirmIconDanger {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin: 0 auto;
+}
+
+.confirmIcon {
+  background: rgba(244, 176, 0, 0.12);
+  color: #f59e0b;
+}
+
+.confirmIconDanger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirmCancel,
+.confirmDelete,
+.confirmDeletePermanent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.confirmCancel {
+  background: transparent;
+  color: var(--text);
+}
+
+.confirmCancel:hover {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.confirmDelete {
+  background: #f59e0b;
+  border-color: #f59e0b;
+  color: #fff;
+}
+
+.confirmDelete:hover {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+.confirmDeletePermanent {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.confirmDeletePermanent:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+/* ── Trash Panel ── */
+.trashOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+  animation: fadeIn 150ms ease;
+}
+
+.trashPanel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 520px;
+  max-width: 92vw;
+  max-height: 70vh;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 200ms ease;
+}
+
+.trashHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+  color: var(--text-dim);
+}
+
+.trashHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.trashSubtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.trashCloseBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.trashCloseBtn:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+}
+
+.trashList {
+  overflow-y: auto;
+  padding: 8px;
+  flex: 1;
+}
+
+.trashEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  color: var(--text-dim);
+  font-size: 28px;
+}
+
+.trashEmpty p {
+  font-size: 13px;
+  margin: 0;
+}
+
+.trashItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background 120ms ease;
+}
+
+.trashItem:hover {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.trashItemInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+.trashItemInfo > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.trashItemTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trashItemMeta {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.trashItemActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.trashItemActions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  padding: 5px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.trashItemActions button:hover {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.trashDeleteBtn {
+  padding: 5px 7px !important;
+}
+
+.trashDeleteBtn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+}

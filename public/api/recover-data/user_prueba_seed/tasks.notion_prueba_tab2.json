@@ -1,0 +1,72 @@
+[
+  {
+    "id": "task_prueba_t2_1",
+    "actividad": "Carlos Mendoza",
+    "fecha": "2026-05-02",
+    "estado": "Activo",
+    "casilla": false,
+    "base_estado_p2": "Activo",
+    "custom_empresa_p2": "TechPeru SAC",
+    "custom_correo_p2": "cmendoza@techperu.pe",
+    "custom_telefono_p2": "+51 987 654 321",
+    "custom_obs_p2": "Interesado en plan corporativo, enviar propuesta la próxima semana",
+    "createdAt": "2026-05-02T10:00:00.000Z",
+    "updatedAt": "2026-05-10T09:15:00.000Z"
+  },
+  {
+    "id": "task_prueba_t2_2",
+    "actividad": "Sandra Quispe",
+    "fecha": "2026-04-28",
+    "estado": "En espera",
+    "casilla": false,
+    "base_estado_p2": "En espera",
+    "custom_empresa_p2": "Distribuidora Lima Norte",
+    "custom_correo_p2": "s.quispe@dimalinorte.com",
+    "custom_telefono_p2": "+51 946 112 033",
+    "custom_obs_p2": "Esperando aprobación de gerencia para firma de contrato",
+    "createdAt": "2026-04-28T14:30:00.000Z",
+    "updatedAt": "2026-05-06T12:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t2_3",
+    "actividad": "Roberto Arenas",
+    "fecha": "2026-04-15",
+    "estado": "Cerrado",
+    "casilla": true,
+    "base_estado_p2": "Cerrado",
+    "custom_empresa_p2": "Inversiones Arenas EIRL",
+    "custom_correo_p2": "rarenas@iarenas.com",
+    "custom_telefono_p2": "+51 912 333 445",
+    "custom_obs_p2": "Contrato firmado. Inicio de servicios el 01/05",
+    "createdAt": "2026-04-10T08:00:00.000Z",
+    "updatedAt": "2026-05-01T10:30:00.000Z"
+  },
+  {
+    "id": "task_prueba_t2_4",
+    "actividad": "Paola Vásquez",
+    "fecha": "2026-05-12",
+    "estado": "Nuevo",
+    "casilla": false,
+    "base_estado_p2": "Nuevo",
+    "custom_empresa_p2": "Grupo Vásquez",
+    "custom_correo_p2": "paola@grupov.pe",
+    "custom_telefono_p2": "+51 999 876 543",
+    "custom_obs_p2": "Primer contacto por referido. Agendar demo",
+    "createdAt": "2026-05-12T11:00:00.000Z",
+    "updatedAt": "2026-05-12T11:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t2_5",
+    "actividad": "Miguel Torres",
+    "fecha": "2026-05-09",
+    "estado": "Activo",
+    "casilla": false,
+    "base_estado_p2": "Activo",
+    "custom_empresa_p2": "Torres & Asociados",
+    "custom_correo_p2": "miguel.t@torresasoc.com",
+    "custom_telefono_p2": "+51 930 211 878",
+    "custom_obs_p2": "Reunión agendada para el 20 de mayo",
+    "createdAt": "2026-05-09T09:30:00.000Z",
+    "updatedAt": "2026-05-13T15:00:00.000Z"
+  }
+]

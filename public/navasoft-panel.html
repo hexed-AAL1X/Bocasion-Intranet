@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>bocasion // sincronizar tickets</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --border: #cfcfcf;
+      --text: #e8e8e8;
+      --muted: #7a7a7a;
+      --teal: #00a99d;
+      --gold: #f6b000;
+      --red: #e31c23;
+      --green: #39ff14;
+      --ink: #111;
+      --mono: "IBM Plex Mono", "JetBrains Mono", "Courier New", monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: var(--mono);
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(227,28,35,.08), transparent 45%),
+        radial-gradient(ellipse at 80% 90%, rgba(0,169,157,.06), transparent 40%);
+      padding: 22px 16px 40px;
+    }
+    /* modo incrustado: sin fondo propio, las terminales flotan sobre el dashboard */
+    html.embed, body.embed {
+      background: transparent;
+      background-image: none;
+    }
+    .scene {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      position: relative;
+      min-height: 78vh;
+    }
+
+    .term {
+      border: 1px solid #3a3a3a;
+      border-radius: 10px;
+      background: #050505;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,.06) inset,
+        0 18px 50px rgba(0,0,0,.75),
+        0 40px 90px rgba(0,0,0,.5);
+      overflow: hidden;
+      user-select: none;
+    }
+    /* brillo CRT sutil sobre el contenido, sin tocar la interacción */
+    .term::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg,
+          rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px,
+          transparent 1px, transparent 3px);
+      mix-blend-mode: screen;
+    }
+    .term { position: relative; }
+
+    .bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 14px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.03em;
+      color: #04110f;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      border-bottom: 1px solid rgba(0,0,0,.4);
+      text-shadow: 0 1px 0 rgba(255,255,255,.15);
+    }
+    .bar:active { cursor: grabbing; }
+    .dragging { transition: none !important; }
+    .bar.teal {
+      background: linear-gradient(180deg, #17c2b4 0%, var(--teal) 55%, #008f85 100%);
+    }
+    .bar.red {
+      background: linear-gradient(180deg, #ff3b42 0%, var(--red) 55%, #b8121a 100%);
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.35);
+    }
+    /* botones estilo semáforo */
+    .dots { display: flex; gap: 7px; }
+    .dots i {
+      width: 11px; height: 11px; display: block;
+      border-radius: 50%;
+      box-shadow: 0 1px 1px rgba(0,0,0,.35) inset, 0 1px 0 rgba(255,255,255,.2);
+    }
+    .dots i:nth-child(1) { background: #ff5f57; }
+    .dots i:nth-child(2) { background: #febc2e; }
+    .dots i:nth-child(3) { background: #28c840; }
+    .bar.red .dots i:nth-child(1) { background: #ffd2d3; }
+    .bar.red .dots i:nth-child(2) { background: #ffe9a8; }
+    .bar.red .dots i:nth-child(3) { background: #baf7c4; }
+
+    /* ---- Terminal 1: boot / tipeo (fondo) ---- */
+    .boot {
+      position: relative;
+      z-index: 1;
+      height: 820px;
+      display: flex;
+      flex-direction: column;
+    }
+    .boot .body {
+      padding: 14px 18px 16px;
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(0,169,157,.05), transparent 60%),
+        #050505;
+    }
+    .typedBlock {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      overflow-anchor: none;
+    }
+    /* pre (no wrap): evita que al tipar se reflowee y “suba” el texto */
+    .typed {
+      margin: 0;
+      white-space: pre;
+      word-break: normal;
+      overflow-wrap: normal;
+      font-size: 10px;
+      line-height: 1.2;
+      color: #d0d0d0;
+      height: 100%;
+      overflow: hidden;
+      overflow-anchor: none;
+    }
+    .typed .kw { color: #fff; }
+    .typed .cm { color: #666; }
+    /* caret en línea con el tipeo; métricas = 1em para no empujar el renglón */
+    .caret {
+      display: inline-block;
+      width: 8px;
+      height: 1em;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: var(--teal);
+      vertical-align: baseline;
+      animation: blink 1s step-end infinite;
+    }
+    .caret.hide { display: none; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .actions {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 10px; flex-wrap: wrap;
+      order: -1;
+      margin: 0 0 8px;
+    }
+    .prompt { color: var(--muted); font-size: 12px; }
+    .prompt strong { color: var(--teal); }
+    .btn {
+      appearance: none; border: 1px solid var(--border); background: #0d0d0d; color: #fff;
+      font-family: var(--mono); font-weight: 800; font-size: 11px; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 9px 12px; cursor: pointer;
+    }
+    .btn:hover:not(:disabled) { background: var(--teal); color: #04110f; border-color: var(--teal); }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .console {
+      margin-top: 14px; border: 1px solid #333; background: #000;
+      min-height: 120px; max-height: 22vh; overflow: auto;
+      padding: 8px 10px; font-size: 11.5px; line-height: 1.4;
+      user-select: none;
+    }
+    .console .line { margin: 0; white-space: pre-wrap; word-break: break-word; color: #8a8a8a; }
+    .console .line.ok { color: var(--green); }
+    .console .line.err { color: var(--red); }
+    .console .line.warn { color: var(--gold); }
+    .console .line.info { color: #ddd; }
+    .console .line.prompt { color: var(--teal); }
+
+    /* ---- Overlay DedSec-style ---- */
+    .overlay {
+      position: absolute;
+      left: 32%;
+      right: auto;
+      top: 80px;
+      width: 94%;
+      z-index: 6;
+      display: none;
+      opacity: 0;
+      transform: translate(10px, 12px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+    .overlay.show {
+      display: block;
+      opacity: 1;
+      transform: none;
+    }
+    .overlay .term {
+      border-color: #4a4a4a;
+      height: 600px;
+      display: flex;
+      flex-direction: column;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,.06) inset,
+        0 0 0 1px rgba(227,28,35,.15),
+        0 24px 60px rgba(0,0,0,.85),
+        0 50px 110px rgba(0,0,0,.6);
+    }
+
+    .split-top {
+      flex: 0 0 auto;
+      height: 320px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 14px 18px 10px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(227,28,35,.04), transparent 55%),
+        #050505;
+      scrollbar-width: none;
+    }
+    .split-top::-webkit-scrollbar { display: none; }
+    .struct {
+      margin: 0;
+      white-space: pre;
+      font-size: clamp(11px, 1.55vw, 13px);
+      line-height: 1.42;
+      color: #eaeaea;
+    }
+    .struct .tag-off { color: var(--red); }
+    .struct .tag-on { color: var(--green); }
+    .struct .dim { color: #777; }
+    .struct .type { color: #bbb; }
+    .s-row { display: flex; }
+    .s-left { flex: 0 0 50%; white-space: pre; }
+    .s-status { flex: 1 1 50%; white-space: pre; }
+    .struct-blink { animation: struct-blink 0.4s steps(1, start) 3; }
+    .tag-on.struct-blink { display: inline-block; }
+    @keyframes struct-blink { 50% { opacity: 0; } }
+
+    .tabs {
+      display: flex;
+      align-items: stretch;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+      background: linear-gradient(180deg, #141414 0%, #0b0b0b 100%);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+    .tab {
+      padding: 7px 16px;
+      color: #888;
+      border-right: 1px solid #2c2c2c;
+      background: transparent;
+      cursor: pointer;
+      transition: color 120ms ease, background 120ms ease;
+    }
+    .tab:hover { color: #ddd; background: rgba(255,255,255,.04); }
+    .tab.active {
+      background: #1d1d1d;
+      color: #fff;
+      box-shadow: 0 -2px 0 var(--red) inset;
+    }
+
+    .split-bot {
+      flex: 1 1 0;
+      min-height: 0;
+      padding: 22px 18px 28px;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(0,169,157,.05), transparent 55%),
+        #050505;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .split-bot .panel {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+    .split-bot .panel.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .split-bot .panel.logs-panel.active,
+    .split-bot .panel.console-panel.active {
+      align-items: stretch;
+      justify-content: flex-start;
+      flex-direction: column;
+    }
+    .log-view,
+    .cmd-view {
+      margin: 0;
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 11.5px;
+      line-height: 1.4;
+      color: #8a8a8a;
+      scrollbar-width: none;
+      user-select: none;
+    }
+    .log-view::-webkit-scrollbar,
+    .cmd-view::-webkit-scrollbar { display: none; }
+    .log-view .line,
+    .cmd-view .line { margin: 0; }
+    .log-view .line.ok,
+    .cmd-view .line.ok { color: var(--green); }
+    .log-view .line.err,
+    .cmd-view .line.err { color: var(--red); }
+    .log-view .line.warn,
+    .cmd-view .line.warn { color: var(--gold); }
+    .log-view .line.info,
+    .cmd-view .line.info { color: #ddd; }
+    .log-view .line.prompt,
+    .cmd-view .line.prompt { color: var(--teal); }
+    .cmd-view .line.out { color: #aaa; }
+    .log-progress {
+      flex: 0 0 auto;
+      margin-top: 8px;
+      padding-top: 7px;
+      border-top: 1px solid #333;
+      color: var(--green);
+      font-size: 11.5px;
+      line-height: 1;
+      white-space: pre;
+      user-select: none;
+    }
+    .net-art {
+      margin: 0;
+      white-space: pre;
+      line-height: 0.65;
+      font-size: clamp(11px, 1.7vw, 15px);
+      color: #fff;
+      letter-spacing: 0.05px;
+      font-weight: 400;
+    }
+    .net-art .on { color: #fff; }
+    .net-art { position: relative; }
+    .net-art .x-overlay {
+      position: absolute;
+      left: 15ch;            /* arranca donde termina la nube (CLOUD_W) */
+      width: 32ch;           /* mismo ancho que la columna del medio (MID_W) */
+      top: 50%;
+      transform: translateY(calc(-50% - 0.65em)); /* subida un espacio en Y */
+      text-align: center;
+      white-space: pre;
+      line-height: 0.72;     /* X chata: filas bien pegadas en vertical */
+      font-weight: 700;
+    }
+    /* la X ya no necesita fondo: las \ y / que quedaban detrás
+    directamente no se dibujan (hueco en las filas del medio) */
+    .net-art .x-box {
+      display: inline-block;
+      background: transparent;
+      padding: 0.3em 1ch;
+    }
+    .net-art .x-blink {
+      color: var(--red);
+      animation: x-blink 0.5s steps(1, end) infinite;
+    }
+    @keyframes x-blink { 50% { opacity: 0; } }
+    .net-art .off { color: #5a5a5a; animation: pulse-off 1.4s ease-in-out infinite; }
+    .net-art .link { color: #efefef; }
+    .net-art .dim { color: #555; animation: pulse-off 1.4s ease-in-out infinite; }
+    @keyframes pulse-off { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+    /* fila de abajo (mid-row2) se mueve 1 espacio a la derecha, luego la
+    de arriba (mid-row1) la sigue; para volver, primero retrocede la
+    de abajo y después la de arriba. */
+    .mid-row1, .mid-row2 { display: inline-block; }
+    /* misma separación entre \ y / en conexión y en desconexión */
+    .mid-row2 { margin-top: 7px; }
+    /* versión quieta de las diagonales (modo desconexión): mismas filas,
+    sin animación */
+    .mid-still1, .mid-still2 { display: inline-block; }
+    .mid-still2 { margin-top: 7px; }
+    .net-art .link.mid-row1 { animation: mid-shift-1 0.28s steps(1, end) infinite; }
+    .net-art .link.mid-row2 { animation: mid-shift-2 0.28s steps(1, end) infinite; }
+    .net-art .dim.mid-row1 { animation: pulse-off 1.4s ease-in-out infinite, mid-shift-1 0.28s steps(1, end) infinite; }
+    .net-art .dim.mid-row2 { animation: pulse-off 1.4s ease-in-out infinite, mid-shift-2 0.28s steps(1, end) infinite; }
+    /* saltos secos, sin deslizamiento: cada tramo es un "golpe" instantáneo,
+       como parpadeo de consola, no un movimiento suave */
+    @keyframes mid-shift-2 {
+      0%, 12.5% { transform: translateX(0); }
+      25%, 62.5% { transform: translateX(1ch); }
+      75%, 100% { transform: translateX(0); }
+    }
+    @keyframes mid-shift-1 {
+      0%, 37.5% { transform: translateX(0); }
+      50%, 87.5% { transform: translateX(1ch); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <!-- Terminal fondo: tipeo -->
+    <div class="term boot" id="bootTerm">
+      <div class="bar teal">
+        <div>ops@bocasion:/export/navasoft</div>
+        <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+      <div class="body">
+        <div class="typedBlock">
+          <pre class="typed" id="typed"></pre>
+          <span class="caret hide" id="caret"></span>
+        </div>
+        <div class="actions">
+          <div class="prompt"><strong>ops@bocasion</strong>:~$ ./sincronizar_tickets.sh</div>
+          <button class="btn" id="btn" type="button" hidden disabled>[ run sync ]</button>
+        </div>
+        <div class="console" id="console" hidden></div>
+      </div>
+    </div>
+
+    <!-- Overlay: struct + tabs + ascii red/servidor -->
+    <div class="overlay" id="overlay">
+      <div class="term">
+        <div class="bar red">
+          <div>ops@bocasion:/link/navasoft</div>
+          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+
+        <div class="split-top">
+          <pre class="struct" id="structView"></pre>
+        </div>
+
+        <div class="tabs" id="tabs">
+          <div class="tab" data-panel="console">console 1</div>
+          <div class="tab" data-panel="logs">logs</div>
+          <div class="tab active" data-panel="art">cmd.exe</div>
+        </div>
+
+        <div class="split-bot">
+          <div class="panel art-panel active" data-panel="art">
+            <pre class="net-art" id="netArt"></pre>
+          </div>
+          <div class="panel logs-panel" data-panel="logs">
+            <div class="log-view" id="logView"></div>
+            <div class="log-progress" id="logProgress">[----------------------------------------]   0%</div>
+          </div>
+          <div class="panel console-panel" data-panel="console">
+            <div class="cmd-view" id="cmdView"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  var NL = String.fromCharCode(10);
+  var params = new URLSearchParams(window.location.search);
+  var EMBEDDED = params.get("embed") === "1";
+  var REMOTE_JOB = params.get("job") || "";
+  var QUEUE_URL = params.get("queue") || "";
+  if (EMBEDDED) {
+    document.documentElement.classList.add("embed");
+    document.body.classList.add("embed");
+  }
+  var parentOrigin = "*";
+  try {
+    if (document.referrer) parentOrigin = new URL(document.referrer).origin;
+  } catch (_) {}
+
+  /* popup: avisa a la ventana que lo abrió; iframe: a la página contenedora */
+  function notifyParent(payload) {
+    if (!EMBEDDED) return;
+    var target = window.opener || (window.parent !== window ? window.parent : null);
+    if (target) target.postMessage(payload, parentOrigin);
+  }
+
+  function queueUrl(action) {
+    var sep = QUEUE_URL.indexOf("?") >= 0 ? "&" : "?";
+    return QUEUE_URL + sep + "action=" + encodeURIComponent(action) + "&id=" + encodeURIComponent(REMOTE_JOB);
+  }
+
+  var typedEl = document.getElementById("typed");
+  var caret = document.getElementById("caret");
+  var btn = document.getElementById("btn");
+  var overlay = document.getElementById("overlay");
+  var structView = document.getElementById("structView");
+  var splitTop = structView.closest(".split-top"); // el que realmente scrollea (structView es un <pre> sin scroll propio)
+  var netArt = document.getElementById("netArt");
+  var consoleEl = document.getElementById("console");
+  var logView = document.getElementById("logView");
+  var logProgress = document.getElementById("logProgress");
+  var cmdView = document.getElementById("cmdView");
+  var tabsEl = document.getElementById("tabs");
+  var botPanels = overlay.querySelectorAll(".split-bot .panel");
+  var cmdsSeen = {}; /* evita duplicar el mismo comando en console 1 */
+
+  var es = null;
+  var anim = null;
+  var frame = 0;
+  var mapIndex = 0;
+  var linkIndex = 0;
+  var typingDone = false;
+  var linked = false;
+  var exportProgress = 0;
+  var ticketTotal = 0;
+  var ticketDone = 0;
+
+  /* Paso 1: enlace con Navasoft (host, sesión, iframe de tickets) */
+  var LINKS = [
+    { type: "char *", name: "host" },
+    { type: "char *", name: "portal_url" },
+    { type: "char *", name: "tickets_url" },
+    { type: "char *", name: "session_id" },
+    { type: "char *", name: "iframe_sync" }
+  ];
+  var linkOk = LINKS.map(function () { return false; });
+
+  /* Paso 2: campos extraídos — mapeo columnas navasoft -> bocasion */
+  var FIELDS = [
+    { type: "char *", name: "Idincidente" },
+    { type: "char *", name: "contacto" },
+    { type: "char *", name: "fecha" },
+    { type: "char *", name: "motivo" },
+    { type: "char *", name: "CodUsuRes" },
+    { type: "char *", name: "FecRespuesta" },
+    { type: "char *", name: "estado" },
+    { type: "char *", name: "descripcion" },
+    { type: "char *", name: "detalle_respuesta" },
+    { type: "char *", name: "detalle_modulo" },
+    { type: "char *", name: "detalle_submodulo" },
+    { type: "int   ", name: "dias" }
+  ];
+  var connected = FIELDS.map(function () { return false; });
+
+  var BOOT_LINES = [
+    
+    "_ooooo_____oooo____ooooooo_____oooo____ooooooo___oooooooo_ooooooo_",
+    "oo___oo__oo____oo__oo____oo__oo____oo__oo____oo_____oo____oo______",
+    "_oo_____oo______oo_oo____oo_oo______oo_oo____oo_____oo____oooo____",
+    "___oo___oo______oo_oooooo___oo______oo_ooooooo______oo____oo______",
+    "oo___oo__oo____oo__oo________oo____oo__oo____oo_____oo____oo______",
+    "_ooooo_____oooo____oo__________oooo____oo_____oo____oo____ooooooo_",
+    "__________________________________________________________________",
+    "",
+    "while ((c = getopt(argc, argv, \"vDT:d:s:n:L:f:t:S:a:\")) != -1) {",
+    "  switch (c) {",
+    "  case 'v': cfg.verbose++; break;",
+    "  case 'D': cfg.directed++; break;",
+    "  case 'T': cfg.test_only++; break;",
+    "  case 'd': /* target host */",
+    "    cfg.target = (struct in_addr *) smalloc(sizeof(struct in_addr));",
+    "    if (inet_aton(optarg, cfg.target) == 0) {",
+    "      fprintf(stderr, \"Your destination is buggy\\n\");",
+    "      return (1);",
+    "    }",
+    "    cfg.host = \"38.210.1.85:85\";",
+    "    break;",
+    "  case 's': /* bocasion channel */",
+    "    if (inet_aton(optarg, (struct in_addr *) &cfg.net) == 0) {",
+    "      fprintf(stderr, \"Your source net is wrong\\n\");",
+    "      return (1);",
+    "    }",
+    "    cfg.channel = \"soporteonline_tickets\";",
+    "    break;",
+    "  case 'n': /* navasoft map */",
+    "    if (inet_aton(optarg, (struct in_addr *) &cfg.mask) == 0) {",
+    "      fprintf(stderr, \"Your source mask is wrong\\n\");",
+    "      return (1);",
+    "    }",
+    "    cfg.map = \"ticket_export_t\";",
+    "    break;",
+    "  case 'L': cfg.n_neig = (unsigned int) strtoul(optarg, NULL, 0); break;",
+    "  case 'f': cfg.data_start = (unsigned int) strtoul(optarg, NULL, 0); break;",
+    "  case 'f': cfg.filename = (char *) malloc(strlen(optarg) + 1);",
+    "    strcpy(cfg.filename, optarg);",
+    "    break;",
+    "  case 't': cfg.target_sel = (unsigned int) strtoul(optarg, NULL, 0);",
+    "    if (cfg.target_sel > TARGETS) {",
+    "      fprintf(stderr, \"Target number unknown\\n\");",
+    "      return (1);",
+    "    }",
+    "    break;",
+    "  case 'S': cfg.nop_sleep = (unsigned int) strtoul(optarg, NULL, 0); break;",
+    "  case 'a': if (inet_aton(optarg, (struct in_addr *) &cfg.area) == 0) {",
+    "      fprintf(stderr, \"Your area doesn't make sense\\n\");",
+    "      return (1);",
+    "    }",
+    "    break;",
+    "  default: usage(argv[0]);",
+    "  }",
+    "}"
+  ];
+
+  /* cada variable es una fila flex: la mitad izquierda es la declaración,
+  la mitad derecha (que arranca justo al 50% del ancho, o sea al centro
+  de la pantalla) es el estado "connected" — así queda centrado sin
+  depender de contar caracteres. */
+  function structBlock(comment, structName, items, statusArr) {
+    var lefts = items.map(function (it) { return "  " + it.type + " " + it.name + ";"; });
+
+    /* cada línea es un <div> (ya es un bloque por sí sola, sin necesitar un
+    "\n" aparte) para no duplicar el salto de línea y dejar un renglón
+    en blanco entre cada variable */
+    var out = [];
+    out.push("<div class='dim'>// " + comment + "</div>");
+    out.push("<div class='dim'>typedef struct {</div>");
+    for (var i = 0; i < items.length; i++) {
+      var ok = statusArr[i];
+      var statusHtml = "";
+      /* los [ ] llevan el mismo color que su estado (verde/rojo), pero
+      con la clase extra "br" para que NO parpadeen: solo la palabra */
+      if (ok === 2) {
+        statusHtml = "<span class='tag-off br'>[</span>  <span class='tag-off'>disconnected</span><span class='tag-off br'> ];</span>";
+      } else if (ok) {
+        statusHtml = "<span class='tag-on br'>[</span>  <span class='tag-on'> connected</span><span class='tag-on br'>   ];</span>";
+      }
+      out.push(
+        "<div class='s-row'><span class='s-left'>" + lefts[i] +
+        "</span><span class='s-status'>" + statusHtml + "</span></div>"
+      );
+    }
+    out.push("<div class='dim'>} " + structName + ";</div>");
+    return out;
+  }
+
+  var STRUCTS = [];
+  var extraStructs = []; // copias de ticket_export_t, ya conectadas, una por registro exportado
+
+  function buildStructs() {
+    return [
+      { comment: "enlace bocasion -> navasoft", name: "nav_link_t", items: LINKS, status: linkOk },
+      { comment: "mapeo de columnas navasoft -> bocasion", name: "ticket_export_t", items: FIELDS, status: connected }
+    ];
+  }
+
+  /* agrega una copia del struct de mapeo, ya toda conectada (sin animación
+  campo por campo). No hace scroll por sí sola: eso lo maneja un único
+  scroll continuo en spawnExtraTicketStructs, como si alguien estuviera
+  desplazando la rueda del mouse de principio a fin. */
+  function addExtraTicketStruct() {
+    var n = extraStructs.length + 1;
+    extraStructs.push({
+      comment: "registro #" + n + " exportado",
+      name: "ticket_export_t",
+      items: FIELDS,
+      status: FIELDS.map(function () { return true; })
+    });
+  }
+
+  var SCROLL_SPEED_PX_MS = 3.0; // velocidad CONSTANTE del scroll (px por milisegundo)
+
+  /* anima manualmente el scrollTop de start -> target a velocidad
+  constante (lineal, sin acelerar ni frenar) — se ve como un scroleo
+  continuo real, siempre a la misma velocidad sin importar la distancia. */
+  function animateScroll(target, onDone) {
+    var start = splitTop.scrollTop;
+    var delta = target - start;
+    var duration = Math.max(Math.abs(delta) / SCROLL_SPEED_PX_MS, 1);
+    var t0 = null;
+    function step(now) {
+      if (t0 === null) t0 = now;
+      var p = Math.min((now - t0) / duration, 1); // lineal: misma velocidad siempre
+      splitTop.scrollTop = start + delta * p;
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else if (onDone) {
+        onDone();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var MAX_EXTRA_STRUCTS = 3; // siempre bajan 3 copias, sin depender de ningún texto del log
+
+  function closeProgramWindow() {
+    notifyParent({ type: "navasoft-panel-finished" });
+    setTimeout(function () {
+      window.close();
+    }, 120);
+  }
+
+  /* FASE 1 (independiente de los logs): en cuanto el struct de mapeo queda
+  100% conectado se agregan 3 copias (ya conectadas) y se hace UN solo
+  scroll continuo hasta el fondo; al llegar pasa a FASE 2: la pestaña de
+  logs muestra la extracción real. */
+  function spawnExtraTicketStructs() {
+    if (extrasSpawned) return;
+    extrasSpawned = true;
+    for (var i = 0; i < MAX_EXTRA_STRUCTS; i++) addExtraTicketStruct();
+    renderAll();
+    requestAnimationFrame(function () {
+      var target = Math.max(0, splitTop.scrollHeight - splitTop.clientHeight);
+      animateScroll(target, function () {
+        setActiveTab("logs");
+        logsPhase = true;
+        maybeStartDisconnect();
+      });
+    });
+  }
+
+  /* FASE 3: desconexión campo a campo; al terminar el mapeo, las copias
+  pasan a disconnected y se hace un scroll rápido al fondo (igual que
+  en connected), y ahí se cierra. */
+  function maybeStartDisconnect() {
+    if (!exportDone || !logsPhase || disconnectStarted) return;
+    disconnectStarted = true;
+    setTimeout(startDisconnectSequence, 280);
+  }
+
+  function startDisconnectSequence() {
+    animateScroll(0, function () {
+      setActiveTab("art");
+      stopAnim();
+      netArt.innerHTML = netFrame(1, false, true);
+
+      var k = 0;
+      function nextLink() {
+        if (k < LINKS.length) {
+          linkOk[k] = 2;
+          k += 1;
+          renderAll();
+          setTimeout(nextLink, 55);
+          return;
+        }
+        blinkStructThenReveal(0, function () {
+          var j = 0;
+          function nextField() {
+            if (j < FIELDS.length) {
+              connected[j] = 2;
+              j += 1;
+              renderAll();
+              setTimeout(nextField, 55);
+              return;
+            }
+            blinkStructThenReveal(1, function () {
+              /* como en connected: extras ya disconnected + scroll rápido al fondo → cierra */
+              for (var e = 0; e < extraStructs.length; e++) {
+                extraStructs[e].status = FIELDS.map(function () { return 2; });
+              }
+              renderAll();
+              requestAnimationFrame(function () {
+                var target = Math.max(0, splitTop.scrollHeight - splitTop.clientHeight);
+                var prevSpeed = SCROLL_SPEED_PX_MS;
+                SCROLL_SPEED_PX_MS = 5.5; /* un poco más rápido que el de connected */
+                animateScroll(target, function () {
+                  SCROLL_SPEED_PX_MS = prevSpeed;
+                  overlay.classList.remove("show");
+                  closeProgramWindow();
+                });
+              });
+            });
+          }
+          nextField();
+        });
+      }
+      nextLink();
+    });
+  }
+
+  function finalSummary() {
+    return "<span class='dim'>/* uplink " + (linked ? "LIVE" : "STANDBY") + " · enlace " +
+      linkOk.filter(Boolean).length + "/" + LINKS.length + " · mapeado " +
+      connected.filter(Boolean).length + "/" + FIELDS.length + " */</span>";
+  }
+
+  /* TODOS los structs están siempre visibles desde el arranque (con su
+  estado vacío); cada uno solo va llenando "connected" de a uno, sin
+  mostrar "disconnected" ni esperar a que el anterior termine para
+     aparecer. */
+  function renderAll() {
+    var parts = [];
+    for (var i = 0; i < STRUCTS.length; i++) {
+      var s = STRUCTS[i];
+      var html = structBlock(s.comment, s.name, s.items, s.status).join("");
+      parts.push("<div id='structBlock" + i + "'>" + html + "</div>");
+    }
+    for (var j = 0; j < extraStructs.length; j++) {
+      var e = extraStructs[j];
+      parts.push(
+        "<div id='extraBlock" + j + "'>" +
+        structBlock(e.comment, e.name, e.items, e.status).join("") +
+        "</div>"
+      );
+    }
+    parts.push(finalSummary());
+    structView.innerHTML = parts.join(NL + NL);
+  }
+
+  var BLINK_DURATION_MS = 700; // más corto para no demorar el cierre
+  var blinkTimer = null;
+  var extrasSpawned = false;
+  var logsPhase = false;        // fase 2: la vista está en la pestaña logs
+  var exportDone = false;       // el proceso real ya terminó (ok)
+  var disconnectStarted = false;
+
+  /* Al completar el struct `idx`, parpadea SOLO su stack de estados
+  (connected o disconnected, según la fase) y luego sube un poco la
+  vista para que el usuario vea el siguiente struct en proceso. */
+  function blinkStructThenReveal(idx, callback) {
+    var el = document.getElementById("structBlock" + idx);
+    if (el) {
+      /* solo la palabra del estado parpadea; los [ ] (clase .br) no */
+      var tags = el.querySelectorAll(".tag-on:not(.br), .tag-off:not(.br)");
+      for (var i = 0; i < tags.length; i++) tags[i].classList.add("struct-blink");
+    }
+    if (blinkTimer) clearTimeout(blinkTimer);
+    blinkTimer = setTimeout(function () {
+      blinkTimer = null;
+      var nextEl = document.getElementById("structBlock" + (idx + 1));
+      if (nextEl) nextEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (callback) callback();
+    }, BLINK_DURATION_MS);
+  }
+
+  /* ASCII: nube wifi densa + dos bloques de \ + torre binaria — como la referencia */
+  function pad(s, n) {
+    s = String(s);
+    while (s.length < n) s += " ";
+    return s;
+  }
+
+  function centerPad(s, n) {
+    s = String(s);
+    if (s.length >= n) return s;
+    var left = Math.floor((n - s.length) / 2);
+    var right = n - s.length - left;
+    return pad("", left) + s + pad("", right);
+  }
+
+  function netFrame(lvl, on, xMode) {
+    /* la nube completa comparte un solo estado activo/inactivo;
+    en xMode (desconexión) todo se ve brillante pero quieto, con una
+    X roja parpadeando al centro entre las filas de \ y / */
+    var C = (on || xMode) ? "on" : "off";
+    var S = (on || xMode) ? "on" : "dim";
+
+    var CLOUD_W = 15;
+    var MID_W = 32;
+    var TOWER_W = 13;
+    var mid = [
+      "\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\",
+      "/ / / / / / / / / / / / /"
+    ];
+
+    /* X de error: 8 filas, dibujada con las mismas diagonales
+    (todas las filas miden 10 chars para que el centrado no la deforme) */
+    var xArt = [
+      "∘∘      ∘∘",
+      " ∘∘    ∘∘ ",
+      "  ∘∘  ∘∘  ",
+      "   ∘∘∘∘   ",
+      "   ∘∘∘∘   ",
+      "  ∘∘  ∘∘  ",
+      " ∘∘    ∘∘ ",
+      "∘∘      ∘∘"
+    ];
+
+    var cloud = [
+      { cls: C, txt: "     ∘∘∘∘∘     " },
+      { cls: C, txt: "   ∘∘∘∘∘∘∘∘∘   " },
+      { cls: C, txt: " ∘∘∘       ∘∘∘ " },
+      { cls: C, txt: "∘∘    ∘∘∘    ∘∘" },
+      { cls: C, txt: "    ∘∘∘∘∘∘∘    " },
+      { cls: C, txt: "   ∘∘     ∘∘   " },
+      { cls: C, txt: "      ∘∘∘      " },
+      { cls: C, txt: "     ∘∘∘∘∘     " },
+      { cls: C, txt: "    ∘     ∘    " },
+      { cls: C, txt: "       ∘       " },
+      { cls: C, txt: "      ∘∘∘      " },
+      { cls: C, txt: "       ∘       " }
+    ];
+
+    var tower = [
+      "╭───────────────╮",
+      "│ ███╗      ██╗ │",
+      "│ ████╗     ██║ │",
+      "│ ██╔██╗    ██║ │",
+      "│ ██║╚██╗   ██║ │",
+      "│ ██║ ╚██╗  ██║ │",
+      "│ ██║  ╚██╗ ██║ │",
+      "│ ██║   ╚██╗██║ │",
+      "│ ██║    ╚████║ │",
+      "│ ██║     ╚███║ │",
+      "│ ╚═╝      ╚══╝ │",
+      "╰───────────────╯"
+    ];
+
+    var rows = Math.max(cloud.length, tower.length);
+    var lines = [];
+    for (var i = 0; i < rows; i++) {
+      var cloudRow = cloud[i] || { cls: a1, txt: "" };
+      var cloudHtml = "<span class='" + cloudRow.cls + "'>" + pad(cloudRow.txt, CLOUD_W) + "</span>";
+      /* fila 1 (arriba, i===4) y fila 2 (abajo, i===5, justo debajo) tienen su propia
+      clase para poder animarlas por separado en CSS: primero se mueve
+      la fila 2 un espacio a la derecha, luego la fila 1 la sigue;
+         para volver, retrocede primero la fila 2 y después la fila 1. */
+      var midTxt = "";
+      var midCls = "";
+      if (xMode) {
+        /* \ y / en su lugar habitual pero QUIETAS (sin animación),
+        con un poco más de separación vertical entre ellas */
+        midTxt = i === 4 ? mid[0] : (i === 5 ? mid[1] : "");
+        midCls = i === 4 ? " mid-still1" : (i === 5 ? " mid-still2" : "");
+      } else if (on) {
+        midTxt = i === 4 ? mid[0] : (i === 5 ? mid[1] : "");
+        midCls = i === 4 ? " mid-row1" : (i === 5 ? " mid-row2" : "");
+      }
+      /* las diagonales del medio ya no tienen estado inactivo: siempre
+      se ven blancas/brillantes ("link"), sin importar la conexión.
+      Si está desconectado, ninguna de las dos filas aparece. */
+      var midStr = centerPad(midTxt, MID_W);
+      if (xMode && (i === 4 || i === 5)) {
+        /* hueco para la X: las \ y / que caen detrás NO se dibujan
+        (sin caja negra que oscurezca el fondo) */
+        var GAP = 14;
+        var gapStart = Math.floor((MID_W - GAP) / 2);
+        midStr = midStr.slice(0, gapStart) + pad("", GAP) + midStr.slice(gapStart + GAP);
+      }
+      var midHtml = "<span class='link" + midCls + "'>" + midStr + "</span>";
+      var towerHtml = "<span class='" + S + "'>" + pad(tower[i] || "", TOWER_W) + "</span>";
+      lines.push(cloudHtml + midHtml + towerHtml);
+    }
+    var out = lines.join(NL);
+    if (xMode) {
+      /* la X va ENCIMA del hueco: las diagonales de atrás ya no se dibujan,
+      así que no hace falta caja opaca; solo el texto rojo (x-blink) parpadea */
+      out += "<span class='x-overlay'><span class='x-box'><span class='x-blink'>" +
+        xArt.join(NL) + "</span></span></span>";
+    }
+    return out;
+  }
+
+  function typeLines(lines) {
+    var i = 0;
+    caret.classList.remove("hide");
+
+    function paint(full, below) {
+      /* caret viaja con el tipeo; al terminar queda en la línea de abajo */
+      typedEl.textContent = below ? (full + NL) : full;
+      typedEl.appendChild(caret);
+    }
+
+    function prefixUpTo(lineIdx) {
+      if (lineIdx === 0) return "";
+      return lines.slice(0, lineIdx).join(NL) + NL;
+    }
+
+    /* Solo tipean literales ("..." / '...'); el resto (vars, keywords) sale de golpe */
+    function splitParts(line) {
+      var parts = [];
+      var re = /"[^"]*"|'[^']*'/g;
+      var last = 0, m;
+      while ((m = re.exec(line)) !== null) {
+        if (m.index > last) parts.push({ value: false, text: line.slice(last, m.index) });
+        parts.push({ value: true, text: m[0] });
+        last = m.index + m[0].length;
+      }
+      if (last < line.length) parts.push({ value: false, text: line.slice(last) });
+      if (!parts.length) parts.push({ value: false, text: line });
+      return parts;
+    }
+
+    function nextLine() {
+      if (i >= lines.length) {
+        /* caret debajo de la última línea */
+        paint(lines.join(NL), true);
+        typingDone = true;
+        /* cuando acaba el tipeo, espera 3s y vuelve a reescribirse */
+        setTimeout(function () { typeLines(lines); }, 3000);
+        return;
+      }
+
+      var line = lines[i];
+      var base = prefixUpTo(i);
+      var parts = splitParts(line);
+      var partIdx = 0;
+      var built = "";
+
+      function nextPart() {
+        if (partIdx >= parts.length) {
+          paint(base + built, false);
+          i += 1;
+          setTimeout(nextLine, 10);
+          return;
+        }
+        var part = parts[partIdx];
+        if (!part.value) {
+          built += part.text;
+          paint(base + built, false);
+          partIdx += 1;
+          setTimeout(nextPart, 2);
+          return;
+        }
+        var k = 0;
+        function typeVal() {
+          if (k < part.text.length) {
+            k += 2;
+            if (k > part.text.length) k = part.text.length;
+            paint(base + built + part.text.slice(0, k), false);
+            setTimeout(typeVal, 10);
+            return;
+          }
+          built += part.text;
+          partIdx += 1;
+          nextPart();
+        }
+        typeVal();
+      }
+
+      nextPart();
+    }
+
+    paint("", false);
+    nextLine();
+  }
+
+  function setActiveTab(name) {
+    var tabs = tabsEl.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.toggle("active", tabs[i].getAttribute("data-panel") === name);
+    }
+    for (var p = 0; p < botPanels.length; p++) {
+      botPanels[p].classList.toggle("active", botPanels[p].getAttribute("data-panel") === name);
+    }
+  }
+
+  tabsEl.addEventListener("click", function (ev) {
+    var tab = ev.target.closest(".tab");
+    if (!tab) return;
+    var name = tab.getAttribute("data-panel") || "art";
+    var tabs = tabsEl.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+    tab.classList.add("active");
+    for (var p = 0; p < botPanels.length; p++) {
+      botPanels[p].classList.toggle("active", botPanels[p].getAttribute("data-panel") === name);
+    }
+  });
+
+  function cleanConsoleText(text) {
+    return String(text)
+      .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "")
+      .replace(/[\uFE0E\uFE0F\u200D]/g, "")
+      .replace(/^\s+/, "");
+  }
+
+  function updateProgress(value, label) {
+    exportProgress = Math.max(exportProgress, Math.min(100, Math.round(value)));
+    var width = 40;
+    var filled = Math.round(exportProgress * width / 100);
+    var bar = "#".repeat(filled) + "-".repeat(width - filled);
+    var extra = "";
+    if (ticketTotal > 0 && ticketDone > 0 && exportProgress < 100) {
+      extra = "  " + ticketDone + "/" + ticketTotal;
+    }
+    logProgress.textContent = "[" + bar + "] " +
+      String(exportProgress).padStart(3, " ") + "%  " + (label || "exportando") + extra;
+  }
+
+  function applyTicketProgress(done, total) {
+    if (!(total > 0) || !(done >= 0)) return;
+    ticketTotal = total;
+    ticketDone = Math.min(done, total);
+    /* setup ~20%, detalle de tickets 20%→95%, cierre 100% */
+    var pct = 20 + Math.round((ticketDone / ticketTotal) * 75);
+    updateProgress(pct, "procesando tickets");
+    pushCmdOnce("detalle", "ops@bocasion:~$ curl /soporteonline_tickets/view/detalle_ticket.php  # x" + total, "prompt");
+  }
+
+  function appendConsole(text, cls) {
+    if (logView) {
+      var line = document.createElement("div");
+      line.className = "line" + (cls ? " " + cls : "");
+      line.textContent = cleanConsoleText(text);
+      logView.appendChild(line);
+      logView.scrollTop = logView.scrollHeight;
+    }
+  }
+
+  /* console 1: historial de comandos ejecutados (estilo shell) */
+  function appendCmd(text, cls) {
+    if (!cmdView) return;
+    var line = document.createElement("div");
+    line.className = "line" + (cls ? " " + cls : "");
+    line.textContent = text;
+    cmdView.appendChild(line);
+    cmdView.scrollTop = cmdView.scrollHeight;
+  }
+
+  function pushCmdOnce(key, text, cls) {
+    if (cmdsSeen[key]) return;
+    cmdsSeen[key] = true;
+    appendCmd(text, cls);
+  }
+
+  function showOverlay() {
+    overlay.classList.add("show");
+    if (blinkTimer) { clearTimeout(blinkTimer); blinkTimer = null; }
+    linkOk = LINKS.map(function () { return false; });
+    linkIndex = 0;
+    connected = FIELDS.map(function () { return false; });
+    mapIndex = 0;
+    linked = false;
+    STRUCTS = buildStructs();
+    extraStructs = [];
+    extrasSpawned = false;
+    logsPhase = false;
+    exportDone = false;
+    disconnectStarted = false;
+    revealQueue = [];
+    revealBusy = false;
+    splitTop.scrollTop = 0;
+    if (logView) logView.innerHTML = "";
+    if (cmdView) cmdView.innerHTML = "";
+    cmdsSeen = {};
+    exportProgress = 0;
+    ticketTotal = 0;
+    ticketDone = 0;
+    updateProgress(0, "iniciando");
+    setActiveTab("art");
+    renderAll();
+    netArt.innerHTML = netFrame(1, false);
+    startAnim(false);
+
+    /* comandos iniciales que se disparan al arrancar el export */
+    appendCmd("ops@bocasion:~$ ./sincronizar_tickets.sh", "prompt");
+    appendCmd("python3 ticket_exporter.py --modo-batch \\", "out");
+    appendCmd("  --usuario *** --base-url http://38.210.1.85:85 \\", "out");
+    appendCmd("  --estado todos --desde 01/01/2010 --hasta hoy \\", "out");
+    appendCmd("  --salida exports/tickets_navasoft.json", "out");
+
+    /* FASE 1: la animación de "connected" corre sola, con ritmo propio,
+    sin esperar a los logs de la extracción */
+    enqueueReveal("link", LINKS.length);
+    enqueueReveal("field", FIELDS.length);
+  }
+
+  function startAnim(on) {
+    stopAnim();
+    linked = on;
+    netArt.innerHTML = netFrame(1, linked);
+  }
+
+  function stopAnim() {
+    if (anim) clearInterval(anim);
+    anim = null;
+  }
+
+  /* Acción atómica: marca UN campo/enlace como conectado.
+     Devuelve true si con esto se completó ese struct. */
+  function pushNextLink() {
+    if (linkIndex >= LINKS.length) return false;
+    linkOk[linkIndex] = true;
+    linkIndex += 1;
+    renderAll();
+    return linkIndex >= LINKS.length;
+  }
+
+  function pushNextField() {
+    if (mapIndex >= FIELDS.length) return false;
+    connected[mapIndex] = true;
+    mapIndex += 1;
+    renderAll();
+    return mapIndex >= FIELDS.length;
+  }
+
+  /* Cola FIFO: revela SIEMPRE de a uno con ritmo fijo, sin importar si
+     llegan varias líneas de log juntas (evita que aparezcan "de golpe"). */
+  var revealQueue = [];
+  var revealBusy = false;
+
+  function enqueueReveal(token, times) {
+    for (var i = 0; i < (times || 1); i++) revealQueue.push(token);
+    if (!revealBusy) processRevealQueue();
+  }
+
+  function processRevealQueue() {
+    if (revealQueue.length === 0) {
+      revealBusy = false;
+      return;
+    }
+    revealBusy = true;
+    var token = revealQueue.shift();
+    var completed = token === "link" ? pushNextLink() : pushNextField();
+    if (completed) {
+      /* el enlace quedó completo: se enciende el arte de conexión */
+      if (token === "link") startAnim(true);
+      blinkStructThenReveal(token === "link" ? 0 : 1, function () {
+        setTimeout(processRevealQueue, 160);
+        /* el struct de mapeo (field) recién completó: a partir de aquí
+           bajan las copias de cada ticket ya conectado */
+        if (token === "field") spawnExtraTicketStructs();
+      });
+    } else {
+      setTimeout(processRevealQueue, 170);
+    }
+  }
+
+  function classify(text) {
+    var t = text.toLowerCase();
+    if (/error|❌|traceback|failed|falló|denegad/.test(t)) return "err";
+    if (/⚠️|aviso|warning/.test(t)) return "warn";
+    if (/✅|listo|éxito|exito|generado|\bok\b|✔/.test(t)) return "ok";
+    if (/ℹ️|info:|conectando|encontraron|filtros|iniciando/.test(t)) return "info";
+    if (/^\d{4}-\d{2}-\d{2}/.test(text) || text.indexOf(" - INFO -") !== -1) return "";
+    if (text.indexOf("ops@") !== -1) return "prompt";
+    return "";
+  }
+
+  function onLogLine(text) {
+    var progressMatch = text.match(/^PROGRESS\s+(\d+)\s*\/\s*(\d+)/i);
+    if (progressMatch) {
+      applyTicketProgress(parseInt(progressMatch[1], 10), parseInt(progressMatch[2], 10));
+      return; /* no ensucia el log: la barra ya muestra el avance real */
+    }
+
+    var cls = classify(text);
+    appendConsole(text, cls || undefined);
+    var low = text.toLowerCase();
+
+    /* los logs SOLO alimentan la barra de progreso; la animación de
+    connected corre por su cuenta (FASE 1) */
+    if (low.indexOf("conectando") !== -1 || low.indexOf("iniciando sesión") !== -1 || low.indexOf("iniciando sesion") !== -1) {
+      updateProgress(5, "conectando");
+      pushCmdOnce("login", "ops@bocasion:~$ curl -X POST /intranet_so24/controller/validarlogin.php", "prompt");
+    }
+    if (low.indexOf("sesión iniciada") !== -1 || low.indexOf("sesion iniciada") !== -1) {
+      updateProgress(10, "sesion iniciada");
+      pushCmdOnce("session_ok", "# sesión ok — bootstrap iframe tickets", "ok");
+    }
+    if (low.indexOf("filtros") !== -1) {
+      updateProgress(15, "aplicando filtros");
+      pushCmdOnce("filters", "ops@bocasion:~$ curl -X POST /soporteonline_tickets/controller/variables_sesion.php", "prompt");
+    }
+    var foundMatch = text.match(/encontraron\s+(\d+)\s+ticket/i);
+    if (foundMatch) {
+      ticketTotal = parseInt(foundMatch[1], 10);
+      ticketDone = 0;
+      updateProgress(20, ticketTotal ? ("0/" + ticketTotal + " tickets") : "sin tickets");
+      pushCmdOnce("list", "ops@bocasion:~$ curl /soporteonline_tickets/controller/listar_tickets.php", "prompt");
+      pushCmdOnce("list_out", "# " + ticketTotal + " ticket(s) en listado", "out");
+    }
+    if (low.indexOf("datos listos") !== -1 || low.indexOf("datos preparados") !== -1) {
+      updateProgress(98, "preparando subida");
+      pushCmdOnce("json", "ops@bocasion:~$ POST /api/tickets  # sincronización directa", "prompt");
+    }
+    var uploadMatch = text.match(/^UPLOAD\s+(\d+)\s*\/\s*(\d+)/i);
+    if (uploadMatch) {
+      var uDone = parseInt(uploadMatch[1], 10);
+      var uTotal = parseInt(uploadMatch[2], 10);
+      var uPct = 98 + Math.min(1, Math.round((uDone / Math.max(uTotal, 1)) * 1));
+      updateProgress(Math.min(uPct, 99), "subiendo " + uDone + "/" + uTotal);
+      return;
+    }
+    if (low.indexOf("subiendo resultados") !== -1) {
+      updateProgress(98, "subiendo resultados");
+    }
+    if (low.indexOf("upload complete") !== -1) {
+      updateProgress(99, "guardando tickets");
+    }
+  }
+
+  function deliverTickets() {
+    var url = REMOTE_JOB && QUEUE_URL
+      ? queueUrl("result") + "&t=" + Date.now()
+      : "/export/latest?t=" + Date.now();
+    return fetch(url, { cache: "no-store" })
+      .then(function (response) {
+        if (!response.ok) throw new Error("No se recibieron los datos de Navasoft");
+        return response.json();
+      })
+      .then(function (rows) {
+        notifyParent({ type: "navasoft-tickets", rows: rows });
+      });
+  }
+
+  function finishOk() {
+    updateProgress(99, "guardando tickets");
+    deliverTickets().then(function () {
+      updateProgress(100, "tickets actualizados");
+      appendConsole("SYNC COMPLETE", "ok");
+      pushCmdOnce("done", "# SYNC COMPLETE — exit 0", "ok");
+      exportDone = true;
+      maybeStartDisconnect();
+    }).catch(function (error) {
+      appendConsole(String(error), "err");
+      notifyParent({ type: "navasoft-error", message: String(error) });
+      updateProgress(exportProgress, "error");
+      setActiveTab("logs");
+    });
+  }
+
+  function finishFail(message, code) {
+    stopAnim();
+    linked = false;
+    netArt.innerHTML = netFrame(1, false);
+    renderAll();
+    appendConsole("EXPORT FAILED" + (code != null ? " [" + code + "]" : ""), "err");
+    if (message) appendConsole(message, "err");
+    pushCmdOnce("fail", "# EXPORT FAILED — exit " + (code != null ? code : "?"), "err");
+    updateProgress(exportProgress, "error");
+    setActiveTab("logs");
+    overlay.classList.remove("show");
+    notifyParent({ type: "navasoft-error", message: message || "La sincronización de Navasoft falló" });
+  }
+
+  /* Modo remoto: el dashboard pide el job al servidor; el agente Python
+     (PC con acceso a Navasoft) lo ejecuta; aquí solo leemos el log. */
+  function exportarRemote() {
+    btn.disabled = true;
+    if (logView) logView.innerHTML = "";
+    showOverlay();
+    appendConsole("ops@bocasion:~$ poll " + QUEUE_URL + "  # job #" + REMOTE_JOB, "prompt");
+    updateProgress(2, "esperando agente");
+
+    var seen = 0;
+    var startedAt = Date.now();
+    var timer = null;
+
+    /* el log llega por lotes (polling); se gotea línea por línea para
+    que la consola fluya como con el stream local. Si se acumula
+    mucha cola, saca varias por tick para no quedarse atrás. */
+    var lineQueue = [];
+    var lineTimer = null;
+
+    function drainLines() {
+      if (lineQueue.length === 0) { lineTimer = null; return; }
+      var burst = lineQueue.length > 80 ? 6 : (lineQueue.length > 25 ? 3 : 1);
+      for (var b = 0; b < burst && lineQueue.length > 0; b++) {
+        onLogLine(lineQueue.shift() || "");
+      }
+      lineTimer = setTimeout(drainLines, 70);
+    }
+
+    function enqueueLines(lines) {
+      for (var i = 0; i < lines.length; i++) lineQueue.push(lines[i]);
+      if (!lineTimer) drainLines();
+    }
+
+    /* al terminar, deja que la cola visual se vacíe antes de cerrar */
+    function afterQueueEmpty(cb) {
+      if (lineQueue.length === 0 && !lineTimer) { cb(); return; }
+      setTimeout(function () { afterQueueEmpty(cb); }, 120);
+    }
+
+    function stopPoll() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    function tick() {
+      if (Date.now() - startedAt > 15 * 60 * 1000) {
+        stopPoll();
+        finishFail("La sincronización tardó demasiado");
+        return;
+      }
+      fetch(queueUrl("status") + "&t=" + Date.now(), { cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("status " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var job = data && data.job;
+          if (!job) throw new Error("trabajo no encontrado");
+          var log = Array.isArray(job.log) ? job.log : [];
+          if (log.length > seen) {
+            enqueueLines(log.slice(seen));
+            seen = log.length;
+          }
+
+          if (job.status === "pending") {
+            updateProgress(Math.max(exportProgress, 3), "esperando agente");
+          } else if (job.status === "running") {
+            updateProgress(Math.max(exportProgress, 8), "sincronizando");
+          } else if (job.status === "done") {
+            stopPoll();
+            afterQueueEmpty(finishOk);
+            return;
+          } else if (job.status === "error") {
+            stopPoll();
+            afterQueueEmpty(function () {
+              finishFail(job.error || "La sincronización falló");
+            });
+            return;
+          }
+          timer = setTimeout(tick, 1000);
+        })
+        .catch(function (err) {
+          appendConsole("poll: " + err, "warn");
+          timer = setTimeout(tick, 2500);
+        });
+    }
+
+    tick();
+  }
+
+  function exportar() {
+    if (es) return;
+    if (REMOTE_JOB && QUEUE_URL) {
+      exportarRemote();
+      return;
+    }
+    btn.disabled = true;
+    if (logView) logView.innerHTML = "";
+    showOverlay();
+
+    es = new EventSource("/export/stream");
+    es.onmessage = function (ev) {
+      try {
+        var data = JSON.parse(ev.data);
+        if (data.type === "line") {
+          onLogLine(data.text || "");
+        } else if (data.type === "done") {
+          es.close(); es = null;
+          if (data.ok) {
+            finishOk();
+          } else {
+            finishFail("La sincronización de Navasoft falló", data.code);
+          }
+        } else if (data.type === "error") {
+          appendConsole(data.text || "error", "err");
+        }
+      } catch (e) {
+        appendConsole(String(ev.data || e), "err");
+      }
+    };
+    es.onerror = function () {
+      if (es) { es.close(); es = null; }
+      stopAnim();
+      appendConsole("stream disconnected", "warn");
+      updateProgress(exportProgress, "conexion perdida");
+      setActiveTab("logs");
+    };
+  }
+
+  function makeDraggable(bar) {
+    var target = bar.closest(".overlay") || bar.closest(".term");
+    var startX = 0;
+    var startY = 0;
+    var baseX = 0;
+    var baseY = 0;
+
+    bar.addEventListener("pointerdown", function (ev) {
+      if (ev.button !== 0) return;
+      startX = ev.clientX;
+      startY = ev.clientY;
+      baseX = Number(target.dataset.dragX || 0);
+      baseY = Number(target.dataset.dragY || 0);
+      target.classList.add("dragging");
+      bar.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+    });
+
+    bar.addEventListener("pointermove", function (ev) {
+      if (!bar.hasPointerCapture(ev.pointerId)) return;
+      var x = baseX + ev.clientX - startX;
+      var y = baseY + ev.clientY - startY;
+      target.dataset.dragX = x;
+      target.dataset.dragY = y;
+      target.style.transform = "translate(" + x + "px, " + y + "px)";
+    });
+
+    function stopDrag(ev) {
+      if (bar.hasPointerCapture(ev.pointerId)) bar.releasePointerCapture(ev.pointerId);
+      target.classList.remove("dragging");
+    }
+
+    bar.addEventListener("pointerup", stopDrag);
+    bar.addEventListener("pointercancel", stopDrag);
+  }
+
+  var titleBars = document.querySelectorAll(".term > .bar");
+  for (var barIndex = 0; barIndex < titleBars.length; barIndex++) {
+    makeDraggable(titleBars[barIndex]);
+  }
+
+  btn.addEventListener("click", exportar);
+  typeLines(BOOT_LINES);
+  setTimeout(exportar, 450);
+})();
+</script>
+</body>
+</html>

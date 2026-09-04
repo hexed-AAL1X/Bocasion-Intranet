@@ -1,0 +1,74 @@
+[
+  {
+    "id": "task_prueba_t3_1",
+    "actividad": "Kick-off proyecto nuevo cliente",
+    "fecha": "2026-05-05",
+    "estado": "Realizada",
+    "casilla": true,
+    "base_estado_p3": "Realizada",
+    "custom_tipo_p3": "Cliente externo",
+    "custom_participantes_p3": "Carlos M., Paola V., equipo técnico",
+    "createdAt": "2026-05-01T08:00:00.000Z",
+    "updatedAt": "2026-05-05T17:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t3_2",
+    "actividad": "Revisión de avances Q2",
+    "fecha": "2026-05-08",
+    "estado": "Realizada",
+    "casilla": true,
+    "base_estado_p3": "Realizada",
+    "custom_tipo_p3": "Interna",
+    "custom_participantes_p3": "Equipo completo",
+    "createdAt": "2026-05-02T10:00:00.000Z",
+    "updatedAt": "2026-05-08T18:30:00.000Z"
+  },
+  {
+    "id": "task_prueba_t3_3",
+    "actividad": "Demo de funcionalidades al cliente",
+    "fecha": "2026-05-13",
+    "estado": "Cancelada",
+    "casilla": false,
+    "base_estado_p3": "Cancelada",
+    "custom_tipo_p3": "Cliente externo",
+    "custom_participantes_p3": "Miguel T., Roberto A.",
+    "createdAt": "2026-05-05T09:00:00.000Z",
+    "updatedAt": "2026-05-12T14:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t3_4",
+    "actividad": "Reunión de retroalimentación mensual",
+    "fecha": "2026-05-19",
+    "estado": "Pendiente",
+    "casilla": false,
+    "base_estado_p3": "Pendiente",
+    "custom_tipo_p3": "Interna",
+    "custom_participantes_p3": "Jefe de área, equipo soporte",
+    "createdAt": "2026-05-10T11:00:00.000Z",
+    "updatedAt": "2026-05-10T11:00:00.000Z"
+  },
+  {
+    "id": "task_prueba_t3_5",
+    "actividad": "Presentación de propuesta comercial",
+    "fecha": "2026-05-22",
+    "estado": "Pendiente",
+    "casilla": false,
+    "base_estado_p3": "Pendiente",
+    "custom_tipo_p3": "Cliente externo",
+    "custom_participantes_p3": "Sandra Q., gerencia general",
+    "createdAt": "2026-05-12T08:30:00.000Z",
+    "updatedAt": "2026-05-12T08:30:00.000Z"
+  },
+  {
+    "id": "task_prueba_t3_6",
+    "actividad": "Seguimiento acuerdos semana anterior",
+    "fecha": "2026-05-15",
+    "estado": "Realizada",
+    "casilla": true,
+    "base_estado_p3": "Realizada",
+    "custom_tipo_p3": "Interna",
+    "custom_participantes_p3": "Coordinadores de área",
+    "createdAt": "2026-05-08T14:00:00.000Z",
+    "updatedAt": "2026-05-15T12:00:00.000Z"
+  }
+]

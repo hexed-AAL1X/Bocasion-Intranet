@@ -1,0 +1,1663 @@
+.notionPanel {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.notionPanelScroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.notionScrollInner {
+  display: block;
+  min-width: 100%;
+  width: max-content;
+}
+
+.notionPanelHeader {
+  min-width: 100%;
+  box-sizing: border-box;
+}
+
+.notionPanelBody {
+  padding: 0;
+  overflow: visible;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+}
+
+.notionTable {
+  width: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: var(--card);
+  margin-left: 54px;
+}
+
+.notionTable th,
+.notionTable td {
+  padding: 4px 8px;
+  min-height: 38px;
+  vertical-align: middle;
+  text-align: left;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: normal;
+  word-break: break-word;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.notionTable th {
+  white-space: nowrap;
+}
+
+.notionTable th {
+  background: color-mix(in srgb, var(--card) 90%, var(--text) 4%);
+  color: var(--text-dim);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+.notionTable tbody tr {
+  background: var(--card);
+}
+
+.notionTable tbody tr:hover {
+  background: var(--card);
+}
+
+.notionTable tbody td:hover {
+  background: rgba(14, 165, 233, 0.07);
+}
+
+.highlightRowCell {
+  background: rgba(14, 165, 233, 0.08) !important;
+}
+
+.highlightColumnCell {
+  background: rgba(244, 176, 0, 0.08) !important;
+}
+
+.highlightRowCell.highlightColumnCell {
+  background: rgba(14, 165, 233, 0.16) !important;
+}
+
+.editableTitle {
+  all: unset;
+  font: inherit;
+  font-size: inherit;
+  margin-left: 62px;
+  font-weight: inherit;
+  color: inherit;
+  width: 100%;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s;
+}
+
+.editableTitle:hover {
+  border-bottom-color: var(--border);
+}
+
+.editableTitle:focus {
+  border-bottom-color: var(--primary);
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  padding-left: 62px;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.filterChip,
+.filterChipActive,
+.filterAddChip,
+.gridToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.filterChip,
+.gridToggleBtnActive {
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--text);
+}
+
+.viewFilterDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  min-width: 200px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viewFilterOption,
+.viewFilterOptionActive {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.viewFilterOption:hover {
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.viewFilterOptionActive {
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.filterChipActive,
+.filterAddChip:hover,
+.gridToggleBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.gridToggleBtn {
+  flex: 0 0 auto;
+}
+
+.gridToggleBtnRight {
+  margin-left: auto;
+}
+
+.exportMenuWrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.exportMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 9999;
+  min-width: 190px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.2);
+}
+
+.exportMenu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+
+.exportMenu button:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+}
+
+.propertySelect {
+  width: 100%;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--card) 92%, var(--text) 4%);
+  color: var(--text);
+  padding: 0 9px;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.propertySelect:focus {
+  border-color: var(--primary);
+}
+
+.addRowLine td {
+  padding: 6px 10px !important;
+  border: none !important;
+  background: var(--bg) !important;
+}
+
+.addRowBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 6px 8px;
+  margin-left: 4px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.addRowBtn:hover {
+  color: var(--primary);
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.cellInput {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--primary);
+  border-radius: 3px;
+  background: var(--card);
+  color: var(--text);
+  padding: 2px 6px;
+  font: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.cellInput::placeholder {
+  color: var(--text-dim);
+}
+
+.cellInputError {
+  border-color: #ff5d5d;
+}
+
+.cellErrorTooltip {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 90;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: #ff5d5d;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(255, 93, 93, 0.3);
+}
+
+.notionUserCell {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.notionLocationTag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(14, 165, 233, 0.11);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notionAreaTag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(14, 165, 233, 0.11);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notionActivity {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.notionActivity::before {
+  content: "▢";
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.notionStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(244, 176, 0, 0.17);
+  color: color-mix(in srgb, #f5c542 80%, var(--text) 20%);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.placeholderValue {
+  color: var(--text-dim);
+}
+
+.emailLink {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.emailLink:hover {
+  color: #1d4ed8;
+}
+
+.selectChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.14);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multiChipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.attachmentSummary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.attachmentPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(47, 109, 246, 0.12);
+  color: #2f6df6;
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.optionPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 240px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+}
+
+.optionPickerTitle {
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.optionPickerGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.optionPill {
+  width: auto !important;
+  min-height: 26px !important;
+  grid-template-columns: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  background: color-mix(in srgb, var(--card) 88%, var(--text) 4%) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.optionPillActive {
+  background: rgba(14, 165, 233, 0.16) !important;
+  border-color: rgba(14, 165, 233, 0.35) !important;
+  color: var(--primary) !important;
+}
+
+.optionCreateRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--card) 92%, var(--text) 4%);
+}
+
+.optionCreateRow::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  flex-shrink: 0;
+}
+
+.optionCreateInput {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.optionCreateInput:focus {
+  background: var(--bg);
+}
+
+.optionCreateInput::placeholder {
+  color: var(--text-dim);
+}
+
+.optionCreateBtn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--text-dim) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
+}
+
+.optionCreateBtn:hover {
+  background: rgba(14, 165, 233, 0.1) !important;
+  color: var(--primary) !important;
+}
+
+.optionHelper {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.propertyOptionsSection {
+  margin: 8px 12px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--card) 96%, var(--text) 2%);
+}
+
+.propertyOptionsTitle {
+  margin-bottom: 8px;
+  padding-left: 2px;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.propertyOptionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.propertyOptionsEmpty {
+  margin: 0;
+  padding: 4px 2px 6px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.propertyOptionsHint {
+  margin: 0 12px 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--primary) 6%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.propertyOptionItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--card) 92%, var(--text) 4%);
+}
+
+.propertyOptionItem > span {
+  flex: 1;
+}
+
+.propertyOptionItem > button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  color: var(--text-dim) !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  flex-shrink: 0;
+  transition: all 0.15s ease !important;
+}
+
+.propertyOptionItem > button:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #EF4444 !important;
+}
+
+.propertyOptionItem > button.optionVisibilityToggle:hover {
+  background: color-mix(in srgb, var(--primary) 14%, transparent) !important;
+  color: var(--primary) !important;
+}
+
+.colorPickerWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.colorPickerButton {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  display: block;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Evita que .propertyMenu button estire los cuadros de color */
+.propertyMenu .colorPickerWrap .colorPickerButton {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  grid-template-columns: unset !important;
+  text-align: unset !important;
+}
+
+.propertyMenu .colorPickerDropdown .colorSwatch {
+  display: block !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  grid-template-columns: unset !important;
+}
+
+.colorPickerButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.colorPickerDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: repeat(6, 28px);
+  gap: 6px;
+  padding: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.colorSwatch {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0;
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  transition: transform 0.1s ease, border-color 0.1s ease;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.15);
+  border-color: var(--text);
+}
+
+.fileFieldEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 240px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.fileUploadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.fileUploadBtn input {
+  display: none;
+}
+
+.attachmentEditorList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.attachmentEditorItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  gap: 8px;
+  align-items: start;
+}
+
+.attachmentPreviewImage,
+.attachmentPreviewVideo {
+  width: 100%;
+  max-height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #000;
+}
+
+.attachmentPreviewFile {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(47, 109, 246, 0.12);
+  color: #2f6df6;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.attachmentRemoveBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 93, 93, 0.12);
+  color: #ff5d5d;
+  cursor: pointer;
+}
+
+.attachmentRemoveBtn:hover {
+  background: rgba(255, 93, 93, 0.2);
+}
+
+.notionToolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.notionViewSelect {
+  width: auto !important;
+  min-width: 190px;
+  font-size: 13px !important;
+  background: var(--card) !important;
+}
+
+.notionNewButton {
+  padding: 8px 16px !important;
+  font-size: 13px !important;
+}
+
+.customColumnHeader {
+  position: relative;
+}
+
+.columnDropBefore::before,
+.columnDropAfter::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  z-index: 20;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  pointer-events: none;
+}
+
+.columnDropBefore::before {
+  left: -2px;
+}
+
+.columnDropAfter::after {
+  right: -2px;
+}
+
+.addColumnHeader {
+  position: relative;
+  width: 72px;
+  min-width: 72px;
+  text-align: center !important;
+  overflow: visible !important;
+  background: var(--bg) !important;
+  border-color: transparent !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.addColumnActions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.addColumnButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.addColumnButton:hover {
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--primary);
+}
+
+.addColumnCell {
+  background: var(--bg) !important;
+  border-color: transparent !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.columnMenu {
+  position: fixed;
+  z-index: 9999;
+  width: 390px;
+  max-height: 480px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 18px 45px rgba(31, 45, 61, 0.16);
+  color: var(--text);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.columnMenuSearch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.columnMenuGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 8px;
+  padding-top: 8px;
+}
+
+.columnTypeButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 34px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  transition: background 120ms ease;
+}
+
+.columnTypeButton:hover {
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.visibilityMenu {
+  position: fixed;
+  z-index: 9999;
+  width: 320px;
+  max-height: min(520px, calc(100vh - 64px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  color: var(--text);
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.modalScrollList {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.visibilityHeader {
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.visibilityHeader strong {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.visibilityHeader button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.visibilityHeader button:hover {
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  color: var(--text);
+}
+
+.visibilitySearch {
+  width: 100%;
+  height: 32px;
+  margin-bottom: 14px;
+  padding: 0 10px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.visibilitySearch::placeholder {
+  color: var(--text-dim);
+}
+
+.visibilitySectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 6px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.visibilitySectionHeader button {
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.visibilityList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visibilityItem {
+  display: grid;
+  grid-template-columns: 16px 18px 1fr 18px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 28px;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+
+.visibilityItem:hover {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.visibilityItem > svg:first-child {
+  color: var(--text-dim);
+  opacity: 0.55;
+}
+
+.visibilityItem > span:nth-child(3) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.visibilityItem > svg:last-child {
+  color: var(--text-dim);
+  justify-self: end;
+}
+
+.visibilityIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+}
+
+.columnTypeButton svg {
+  flex: 0 0 auto;
+  color: var(--text-dim);
+  font-size: 16px;
+}
+
+.columnTypeButton span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.customColumnHeader {
+  width: 160px;
+  min-width: 160px;
+  position: relative;
+  overflow: visible !important;
+  cursor: pointer;
+}
+
+.customColumnTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customColumnTitle svg {
+  flex: 0 0 auto;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.emptyCustomCell {
+  background: inherit;
+}
+
+.propertyMenu {
+  position: fixed;
+  z-index: 9999;
+  width: 330px;
+  max-height: min(480px, calc(100vh - 48px));
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  font-weight: 400;
+  padding: 8px 0;
+}
+
+.propertyTitleRow {
+  display: grid;
+  grid-template-columns: 24px 1fr 20px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+}
+
+.propertyTitleRow input {
+  min-width: 0;
+  max-width: 200px;
+  height: 30px;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 0 8px;
+  font: inherit;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: border-color 200ms ease;
+}
+
+.propertyTitleRow input:focus {
+  border-color: var(--primary);
+}
+
+.propertyInfo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  background: #bdbdbd;
+  color: #252525;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.propertyInfoWarning {
+  background: #f2c94c;
+  color: #3a2b00;
+}
+
+.propertyInfoError {
+  background: #ff5d5d;
+  color: #ffffff;
+}
+
+.renameNotice {
+  margin: 2px 4px 7px;
+  padding: 7px 8px;
+  border-radius: 5px;
+  background: rgba(242, 201, 76, 0.16);
+  color: #f2c94c;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.propertyMenu button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  padding: 6px 10px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.propertyMenu button:hover {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.propertyMenu button svg {
+  color: var(--text-dim);
+}
+
+.propertyMenu button span:last-child {
+  justify-self: end;
+  max-width: 56px;
+  overflow: hidden;
+  color: inherit;
+  font-size: 11px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.propertyDivider {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--border);
+}
+
+.aiBadge {
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(59, 111, 246, 0.25);
+  color: #8fb0ff;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.deleteProperty {
+  color: #ff5d5d !important;
+  background: rgba(255, 93, 93, 0.1) !important;
+}
+
+.deletePropertyDisabled {
+  color: #9e9e9e !important;
+  background: rgba(158, 158, 158, 0.1) !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+.deletePropertyDisabled:hover {
+  background: rgba(158, 158, 158, 0.1) !important;
+}
+
+.activePropertyAction {
+  background: rgba(14, 165, 233, 0.16) !important;
+  color: var(--primary) !important;
+}
+
+.propertySubmenu {
+  margin: 0 4px 4px 30px;
+  padding: 4px;
+  border-left: 1px solid var(--border);
+}
+
+.propertySubmenu button {
+  min-height: 26px;
+  font-size: 12px;
+}
+
+.pinnedColumnHeader {
+  background: rgba(14, 165, 233, 0.12) !important;
+}
+
+.markedColumnHeader .customColumnTitle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.customColumnHeader[draggable="true"] {
+  cursor: pointer;
+}
+
+.customColumnHeader[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.85;
+}
+
+.checkboxValue,
+.checkboxValueActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid color-mix(in srgb, var(--text-dim) 70%, var(--border));
+  background: color-mix(in srgb, var(--card) 86%, var(--text) 6%);
+  color: transparent;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  transition: all 120ms ease;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.checkboxValue:hover {
+  border-color: var(--primary);
+  background: rgba(14, 165, 233, 0.08);
+}
+
+.checkboxValueActive {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16);
+}
+
+.columnResizeHandle {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 7px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 10;
+}
+
+.resizingColumns,
+.resizingColumns * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+@media (max-width: 900px) {
+  .customColumnHeader {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .notionTable th,
+  .notionTable td {
+    padding: 7px 8px;
+  }
+}
+
+.columnResizeHandle::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  right: 3px;
+  width: 1px;
+  height: 60%;
+  background: transparent;
+  transition: background 120ms ease;
+}
+
+.customColumnHeader:hover .columnResizeHandle::after {
+  background: var(--primary);
+}
+
+.baseColumnHeader {
+  background: color-mix(in srgb, var(--card) 94%, var(--primary) 6%) !important;
+}
+
+.baseColumnCell {
+  background: color-mix(in srgb, var(--card) 97%, var(--primary) 3%) !important;
+}
+
+.notionTable tbody td.highlightRowCell {
+  background: rgba(14, 165, 233, 0.08) !important;
+}
+
+.notionTable tbody td.highlightColumnCell {
+  background: rgba(244, 176, 0, 0.08) !important;
+}
+
+.notionTable tbody td.highlightRowCell.highlightColumnCell {
+  background: rgba(14, 165, 233, 0.16) !important;
+}
+
+.selectChipRemove {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-right: -3px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.selectChip:hover .selectChipRemove {
+  display: inline-flex;
+}
+
+.selectChipRemove:hover {
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.rowSelectorHeader,
+.rowSelectorCell {
+  width: 4px !important;
+  min-width: 4px !important;
+  max-width: 4px !important;
+  padding: 0 !important;
+  text-align: center !important;
+  background: var(--bg) !important;
+  border-color: transparent !important;
+  border-left: none !important;
+  border-right: none !important;
+  overflow: visible !important;
+}
+
+.rowSelectorHeader {
+  position: sticky;
+  left: 0;
+  z-index: 6;
+}
+
+.rowSelectorHeaderInner {
+  position: relative;
+  width: 100%;
+  min-height: 36px;
+}
+
+.rowSelectorHeaderActions {
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  padding-left: 34px;
+}
+
+.rowSelectorHeaderBtn,
+.rowSelectorHeaderBtnIndeterminate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: transparent;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 120ms ease;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.rowSelectorHeaderBtn:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+}
+
+.rowSelectorHeaderBtnIndeterminate {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 28%, var(--card));
+  color: var(--primary);
+}
+
+.rowSelectorHeaderBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.rowSelectorCell {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  overflow: visible !important;
+}
+
+.rowSelectorBtn,
+.rowSelectorBtnActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: transparent;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 120ms ease;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.rowActionsContainer {
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1px;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 100ms ease;
+  z-index: 5;
+}
+
+.notionTable tbody tr:hover .rowActionsContainer,
+.selectedDataRow .rowActionsContainer {
+  opacity: 1;
+}
+
+.rowActionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0;
+  transition: all 100ms ease;
+  flex-shrink: 0;
+}
+
+.rowActionBtn:hover {
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--primary);
+}
+
+.rowDragHandle {
+  cursor: grab;
+}
+
+.rowDragHandle:active {
+  cursor: grabbing;
+}
+
+.notionTable tbody tr:hover .rowSelectorBtn,
+.rowSelectorBtnActive,
+.selectedDataRow .rowSelectorBtn,
+.selectedDataRow .rowSelectorBtnActive {
+  opacity: 1;
+}
+
+.rowSelectorBtn:hover,
+.rowSelectorBtnActive {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.selectedDataRow td:not(.addColumnCell):not(.rowSelectorCell) {
+  background: rgba(68, 111, 255, 0.14) !important;
+}
+
+.selectionToolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.selectionCount {
+  padding: 0 8px;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.selectionToolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.selectionToolbar button:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary);
+}
+

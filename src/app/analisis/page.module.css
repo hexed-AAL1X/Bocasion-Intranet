@@ -1,0 +1,230 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.topbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.heroRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.heroCard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+.topbar h2,
+.heroCard h3 {
+  font-weight: 700;
+}
+
+.heroCard p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.heroCard h3 {
+  margin: 6px 0 0;
+  font-size: 26px;
+}
+
+.chartPanel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  gap: 10px;
+}
+
+.chartHeader h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.chartHeader p {
+  margin: 2px 0 0;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.chartBody {
+  flex: 1;
+  min-height: 260px;
+}
+
+.mainScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: calc(100vh - 110px);
+  overflow: hidden;
+  padding: 4px 0 8px;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  grid-auto-rows: minmax(180px, 1fr);
+  gap: 10px;
+  align-items: stretch;
+  height: 100%;
+}
+
+.chartsGrid > * {
+  height: 100%;
+}
+
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card) 85%, var(--bg) 15%);
+  color: var(--text);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  cursor: grab;
+  transition: all 140ms ease;
+}
+
+.dragHandle:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.cardHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardActions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardActions .ghostBtn {
+  min-width: 34px;
+  height: 34px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--card) 85%, var(--bg) 15%);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transition: all 140ms ease;
+}
+
+.cardActions .ghostBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.chartCard {
+  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  user-select: none;
+  height: 100%;
+}
+
+.chartContent {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartCard * {
+  user-select: none;
+}
+
+.cardDragging {
+  opacity: 0.85;
+  border-color: var(--primary);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.cardMoving {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  background: color-mix(in srgb, var(--card) 90%, var(--primary) 10%);
+}
+
+.cardMovingUp {
+  transform: translateY(-8px);
+}
+
+.cardMovingDown {
+  transform: translateY(8px);
+}
+
+.loading {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-dim);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 800px) {
+  .page {
+    padding: 12px;
+  }
+  .chartPanel {
+    min-height: 220px;
+  }
+}

@@ -1,0 +1,172 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding: 2px 6px;
+  border: 2px solid var(--primary, #0EA5E9);
+  border-radius: 3px;
+  font-size: 12px;
+  background: var(--card, #fff);
+  color: var(--text, #1F2D3D);
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.input::placeholder {
+  color: var(--text-dim, #5A7184);
+}
+
+.calendar {
+  width: 280px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border, #D7E8E3);
+  background: var(--card, #fff);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  z-index: 9999;
+  user-select: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.navBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text, #1F2D3D);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.navBtn:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary, #0EA5E9);
+}
+
+.monthTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text, #1F2D3D);
+  text-transform: capitalize;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.weekDay {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim, #5A7184);
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.dayBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text, #1F2D3D);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.dayBtn:hover {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary, #0EA5E9);
+}
+
+.daySelected {
+  background: var(--primary, #0EA5E9) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.dayOutside {
+  color: var(--text-dim, #5A7184);
+  opacity: 0.4;
+}
+
+.dayToday {
+  border: 2px solid var(--primary, #0EA5E9);
+  font-weight: 700;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border, #D7E8E3);
+}
+
+.footerBtn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--primary, #0EA5E9);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.footerBtn:hover {
+  background: rgba(14, 165, 233, 0.2);
+}
+
+.footerBtnClear {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim, #5A7184);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.footerBtnClear:hover {
+  color: #ff5d5d;
+  background: rgba(255, 93, 93, 0.08);
+}

@@ -1,0 +1,93 @@
+{
+  "baseColumns": [
+    {
+      "id": "base_estado_p1",
+      "title": "Estado",
+      "savedTitle": "Estado",
+      "type": "Estado",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": ["Sin empezar", "En progreso", "Completado", "Bloqueado"],
+      "width": 130,
+      "optionColors": {
+        "Sin empezar": "#9CA3AF",
+        "En progreso": "#F59E0B",
+        "Completado": "#10B981",
+        "Bloqueado": "#EF4444"
+      },
+      "fieldKey": "base_estado_p1"
+    },
+    {
+      "id": "base_fecha_p1",
+      "title": "Fecha límite",
+      "savedTitle": "Fecha límite",
+      "type": "Fecha",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 110,
+      "optionColors": {}
+    },
+    {
+      "id": "base_casilla_p1",
+      "title": "Revisado",
+      "savedTitle": "Revisado",
+      "type": "Casilla",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 80,
+      "optionColors": {},
+      "fieldKey": "casilla"
+    }
+  ],
+  "customColumns": [
+    {
+      "id": "custom_prioridad_p1",
+      "title": "Prioridad",
+      "savedTitle": "Prioridad",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 90,
+      "optionColors": {}
+    },
+    {
+      "id": "custom_notas_p1",
+      "title": "Notas",
+      "savedTitle": "Notas",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 220,
+      "optionColors": {}
+    }
+  ]
+}

@@ -1,0 +1,495 @@
+.wrapper {
+  --primary: #00a99d;
+  --primary-dark: #008f86;
+  --ink: #0f172a;
+  --accent: #00a99d;
+  --bg: #f3fbfb;
+  --bg-soft: #e8f7f5;
+  --panel: #0f172a;
+  --text: #0f172a;
+  --text-dim: #64748b;
+  --border: #d5ebe8;
+
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.formSide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  background: linear-gradient(165deg, #f8fdfc 0%, var(--bg) 55%, var(--bg-soft) 100%);
+  overflow: hidden;
+}
+
+.formDecor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: rgba(0, 169, 157, 0.16);
+}
+
+.formDecor .decorDotGrid {
+  top: 36px;
+  left: 40px;
+  right: auto;
+  color: rgba(0, 169, 157, 0.22);
+}
+
+.formDecor .decorHexLarge {
+  top: auto;
+  bottom: -6%;
+  left: -12%;
+  opacity: 0.45;
+  color: rgba(0, 169, 157, 0.2);
+}
+
+.formDecor .decorHexSmall {
+  top: 14%;
+  right: 8%;
+  bottom: auto;
+  opacity: 0.4;
+  color: rgba(15, 23, 42, 0.1);
+}
+
+.formDecor .decorStripedCircle {
+  top: 12%;
+  right: 10%;
+  opacity: 0.35;
+}
+
+.formDecor .decorSparkleA {
+  color: rgba(0, 169, 157, 0.55);
+}
+
+.formDecor .decorSparkleB {
+  color: rgba(15, 23, 42, 0.18);
+}
+
+.formDecor .decorSparkleC {
+  color: rgba(0, 169, 157, 0.35);
+}
+
+.formDecor .decorFlowerA {
+  color: rgba(0, 169, 157, 0.28);
+}
+
+.formDecor .decorFlowerB {
+  color: rgba(15, 23, 42, 0.12);
+}
+
+.formDecor .decorDotA {
+  color: rgba(0, 169, 157, 0.45);
+}
+
+.formDecor .decorDotB {
+  color: rgba(15, 23, 42, 0.15);
+}
+
+.formDecor .decorDotC,
+.formDecor .decorDotD,
+.formDecor .decorDotE {
+  color: rgba(0, 169, 157, 0.3);
+}
+
+.formDecor .decorLines {
+  opacity: 0.08;
+  color: rgba(0, 169, 157, 0.5);
+}
+
+.formShell {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px 36px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+}
+
+.brand {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+  max-width: 240px;
+}
+
+.cardHead h1 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  text-align: center;
+}
+
+.cardHead p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0 14px;
+  background: #fff;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.inputWrap:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.inputIcon {
+  color: var(--text-dim);
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.inputWrap:focus-within .inputIcon {
+  color: var(--primary);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 14px 0;
+  font-size: 15px;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+}
+
+.error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+}
+
+.retries {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.button {
+  margin-top: 6px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+  font-family: inherit;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+}
+
+.button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ink) 88%, var(--primary));
+  transform: translateY(-1px);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.footerNote {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.45;
+}
+
+.heroSide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  background: linear-gradient(155deg, var(--ink) 0%, #0b2e2b 48%, var(--primary-dark) 100%);
+  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 94%);
+  overflow: hidden;
+}
+
+.heroDecor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  color: rgba(255, 255, 255, 0.14);
+}
+
+.decorDotGrid {
+  position: absolute;
+  top: 28px;
+  right: 36px;
+  width: 72px;
+  height: 72px;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.decorHexLarge {
+  position: absolute;
+  top: 12%;
+  left: -8%;
+  width: min(340px, 55vw);
+  height: auto;
+  opacity: 0.35;
+  color: rgba(0, 220, 200, 0.35);
+}
+
+.decorHexSmall {
+  position: absolute;
+  bottom: 8%;
+  right: 6%;
+  width: 140px;
+  height: auto;
+  opacity: 0.28;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.decorStripedCircle {
+  position: absolute;
+  top: 18%;
+  right: 14%;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: repeating-linear-gradient(
+    -42deg,
+    var(--primary) 0 7px,
+    rgba(255, 255, 255, 0.92) 7px 14px
+  );
+  opacity: 0.55;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.decorSparkle {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+}
+
+.decorSparkleA {
+  top: 34%;
+  left: 10%;
+  color: rgba(0, 220, 200, 0.75);
+  width: 34px;
+  height: 34px;
+}
+
+.decorSparkleB {
+  bottom: 22%;
+  left: 22%;
+  color: rgba(255, 255, 255, 0.45);
+  width: 22px;
+  height: 22px;
+}
+
+.decorSparkleC {
+  top: 62%;
+  right: 20%;
+  color: rgba(255, 255, 255, 0.55);
+  width: 18px;
+  height: 18px;
+}
+
+.decorFlower {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+}
+
+.decorFlowerA {
+  top: 52%;
+  left: 6%;
+  color: rgba(0, 220, 200, 0.45);
+  width: 42px;
+  height: 42px;
+}
+
+.decorFlowerB {
+  bottom: 14%;
+  right: 28%;
+  color: rgba(255, 255, 255, 0.28);
+  width: 30px;
+  height: 30px;
+}
+
+.decorDot {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.decorDotA {
+  top: 24%;
+  left: 28%;
+  width: 10px;
+  height: 10px;
+  color: rgba(0, 220, 200, 0.7);
+}
+
+.decorDotB {
+  top: 44%;
+  right: 10%;
+  width: 14px;
+  height: 14px;
+  color: rgba(0, 220, 200, 0.6);
+}
+
+.decorDotC {
+  bottom: 30%;
+  left: 14%;
+  width: 8px;
+  height: 8px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.decorDotD {
+  bottom: 18%;
+  right: 12%;
+  width: 12px;
+  height: 12px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.decorDotE {
+  top: 12%;
+  left: 42%;
+  width: 7px;
+  height: 7px;
+  color: rgba(0, 220, 200, 0.65);
+}
+
+.decorLines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.12;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
+  width: min(440px, 100%);
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.heroTitle span {
+  color: var(--primary);
+}
+
+.heroSub {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 360px;
+}
+
+@media (max-width: 960px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .heroSide {
+    display: none;
+  }
+
+  .formSide {
+    min-height: 100vh;
+    padding: 28px 20px;
+  }
+
+  .formShell {
+    padding: 32px 24px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.05);
+  }
+}
+
+@media (max-width: 480px) {
+  .cardHead h1 {
+    font-size: 24px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+}

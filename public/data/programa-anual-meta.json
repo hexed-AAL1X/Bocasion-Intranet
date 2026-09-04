@@ -1,0 +1,98 @@
+{
+  "calidad_e_infraestructura::calibración_termómetros_patrón": {
+    "equipoAsociado": "Termómetro patrón digital TP-100",
+    "fechaCompra": "2016-03-15T05:00:00.000Z",
+    "costoCompra": 1850,
+    "vidaUtilAnios": 10,
+    "proveedorEquipo": "Fluke Perú",
+    "notasCompra": "Vida útil cumplida — programar reemplazo"
+  },
+  "calidad_e_infraestructura::calibración_de_termohigrómetro": {
+    "equipoAsociado": "Termohigrómetro TH-200",
+    "fechaCompra": "2018-06-01T05:00:00.000Z",
+    "costoCompra": 980,
+    "vidaUtilAnios": 10,
+    "proveedorEquipo": "Testo Perú",
+    "notasCompra": "80% depreciado — año crítico"
+  },
+  "calidad_e_infraestructura::calibración_de_testo": {
+    "equipoAsociado": "Anemómetro TESTO 410-2",
+    "fechaCompra": "2019-01-20T05:00:00.000Z",
+    "costoCompra": 4200,
+    "vidaUtilAnios": 8,
+    "proveedorEquipo": "Testo Perú",
+    "notasCompra": "Calibración externa anual"
+  },
+  "calidad_e_infraestructura::calibración_de_luxómetro": {
+    "equipoAsociado": "Luxómetro digital LX-1108",
+    "fechaCompra": "2020-08-10T05:00:00.000Z",
+    "costoCompra": 650,
+    "vidaUtilAnios": 8,
+    "proveedorEquipo": "InnovaTools",
+    "notasCompra": "Próximo a vida crítica"
+  },
+  "calidad_e_infraestructura::mantenimiento_de_equipo_purificador_de_agua": {
+    "equipoAsociado": "Purificador osmosis inversa RO-500",
+    "fechaCompra": "2021-04-12T05:00:00.000Z",
+    "costoCompra": 12500,
+    "vidaUtilAnios": 10,
+    "proveedorEquipo": "HydroTech SAC",
+    "notasCompra": "Filtros cambiados trimestralmente"
+  },
+  "calidad_e_infraestructura::mantenimiento_de_campana_extratora_upc": {
+    "equipoAsociado": "Campana extractora 1.8 m UPC",
+    "fechaCompra": "2022-02-28T05:00:00.000Z",
+    "costoCompra": 8900,
+    "vidaUtilAnios": 8,
+    "proveedorEquipo": "LabEquip SAC",
+    "notasCompra": "Mantenimiento semestral"
+  },
+  "calidad_e_infraestructura::mantenimiento_de_campana_extratora_upn_-_planta": {
+    "equipoAsociado": "Campana extractora planta UPN",
+    "fechaCompra": "2023-05-15T05:00:00.000Z",
+    "costoCompra": 11200,
+    "vidaUtilAnios": 10,
+    "proveedorEquipo": "LabEquip SAC",
+    "notasCompra": "Instalación 2023"
+  },
+  "objetivo1::monitoreo_de_agentes_ocupacionales": {
+    "equipoAsociado": "Kit dosimetría ruido y vibraciones",
+    "fechaCompra": "2024-01-10T05:00:00.000Z",
+    "costoCompra": 15600,
+    "vidaUtilAnios": 5,
+    "proveedorEquipo": "Casella CEL",
+    "notasCompra": "Incluye calibrador acústico"
+  },
+  "calidad_e_infraestructura::análisis_microbiológicos": {
+    "equipoAsociado": "Incubadora microbiológica 50L",
+    "fechaCompra": "2024-03-01T05:00:00.000Z",
+    "costoCompra": 3200,
+    "vidaUtilAnios": 6,
+    "proveedorEquipo": "Memmert Perú",
+    "notasCompra": "Control mensual de temperatura"
+  },
+  "calidad_e_infraestructura::inspecciones_internas": {
+    "equipoAsociado": "Tablet inspección + checklist digital",
+    "fechaCompra": "2025-01-15T05:00:00.000Z",
+    "costoCompra": 1800,
+    "vidaUtilAnios": 8,
+    "proveedorEquipo": "Samsung Business",
+    "notasCompra": "Reciente — en servicio"
+  },
+  "calidad_e_infraestructura::mantenimiento_de_trampas_de_grasas": {
+    "equipoAsociado": "Trampa de grasas 2000 L cocina central",
+    "fechaCompra": "2025-02-01T05:00:00.000Z",
+    "costoCompra": 4500,
+    "vidaUtilAnios": 5,
+    "proveedorEquipo": "AquaClean SAC",
+    "notasCompra": "Instalación nueva"
+  },
+  "calidad_e_infraestructura::fumigación_upc": {
+    "equipoAsociado": "Equipo nebulización térmica",
+    "fechaCompra": "2022-11-20T05:00:00.000Z",
+    "costoCompra": 2800,
+    "vidaUtilAnios": 15,
+    "proveedorEquipo": "PestControl Pro",
+    "notasCompra": "Buen estado"
+  }
+}

@@ -1,0 +1,107 @@
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Tema claro Intranet Bocasión — Celeste + Negro */
+  --primary:      #0EA5E9;
+  --primary-dark: #0284C7;
+  --primary-light:#38BDF8;
+  --accent:       #111827;
+  --bg:           #F2F9FD;
+  --card:         #FFFFFF;
+  --text:         #0F1B2D;
+  --text-dim:     #56718A;
+  --border:       #D5E6F2;
+}
+
+/* Tema oscuro — activado por UiPrefsContext vía body[data-dark="true"] */
+body[data-dark="true"] {
+  --bg:       #0A1016;
+  --card:     #0F1720;
+  --text:     #E6F1FB;
+  --text-dim: #8AA1B5;
+  --border:   rgba(255, 255, 255, 0.08);
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar matching brand (Lenis + webkit) */
+body[data-lenis-scrollbar] {
+  scrollbar-width: thin;
+  scrollbar-color: #0EA5E9 #e2f1fb;
+}
+
+body[data-lenis-scrollbar]::-webkit-scrollbar {
+  width: 10px;
+}
+
+body[data-lenis-scrollbar]::-webkit-scrollbar-track {
+  background: #e2f1fb;
+  border-radius: 10px;
+}
+
+body[data-lenis-scrollbar]::-webkit-scrollbar-thumb {
+  background: #0EA5E9;
+  border-radius: 10px;
+  border: 2px solid #e2f1fb;
+}
+
+/* Apply custom scrollbar to all scrollable elements */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #0EA5E9 #e2f1fb;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #e2f1fb;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #0EA5E9;
+  border-radius: 10px;
+  border: 2px solid #e2f1fb;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #0284C7;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

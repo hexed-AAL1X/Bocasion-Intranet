@@ -1,0 +1,93 @@
+.stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10050;
+  pointer-events: none;
+}
+
+.snackbar {
+  min-width: 260px;
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.35;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  animation: snackbarIn 180ms ease-out;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.snackbar_success {
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+}
+
+.snackbar_error {
+  background: linear-gradient(120deg, #ff6b6b, #d7263d);
+}
+
+.snackbar_warning {
+  background: linear-gradient(120deg, var(--accent), #f28f16);
+  color: var(--text);
+}
+
+.inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.message {
+  flex: 1;
+}
+
+.bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  transform-origin: left center;
+  animation-name: snackbarProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes snackbarIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes snackbarProgress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "activeTabId": "notion_prueba_tab1",
+  "tabs": [
+    {
+      "id": "notion_prueba_tab1",
+      "title": "Mis Tareas",
+      "createdAt": "2026-04-28T09:12:00.000Z",
+      "updatedAt": "2026-05-14T10:33:00.000Z"
+    },
+    {
+      "id": "notion_prueba_tab2",
+      "title": "Seguimiento de Clientes",
+      "createdAt": "2026-05-02T14:05:00.000Z",
+      "updatedAt": "2026-05-13T16:20:00.000Z"
+    },
+    {
+      "id": "notion_prueba_tab3",
+      "title": "Reuniones Mayo",
+      "createdAt": "2026-05-05T08:45:00.000Z",
+      "updatedAt": "2026-05-15T09:10:00.000Z"
+    }
+  ],
+  "trash": [
+    {
+      "id": "notion_prueba_trash1",
+      "title": "Borrador Inicial",
+      "createdAt": "2026-04-20T11:00:00.000Z",
+      "updatedAt": "2026-04-22T17:30:00.000Z",
+      "trashedAt": "2026-05-08T13:45:00.000Z"
+    },
+    {
+      "id": "notion_prueba_trash2",
+      "title": "Pruebas Q1",
+      "createdAt": "2026-04-01T09:00:00.000Z",
+      "updatedAt": "2026-04-30T12:00:00.000Z",
+      "trashedAt": "2026-05-10T10:20:00.000Z"
+    }
+  ]
+}

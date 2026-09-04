@@ -1,0 +1,93 @@
+{
+  "baseColumns": [
+    {
+      "id": "base_estado_p3",
+      "title": "Estado",
+      "savedTitle": "Estado",
+      "type": "Estado",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": ["Pendiente", "Realizada", "Cancelada", "Reagendada"],
+      "width": 120,
+      "optionColors": {
+        "Pendiente": "#F59E0B",
+        "Realizada": "#10B981",
+        "Cancelada": "#EF4444",
+        "Reagendada": "#8B5CF6"
+      },
+      "fieldKey": "base_estado_p3"
+    },
+    {
+      "id": "base_fecha_p3",
+      "title": "Fecha",
+      "savedTitle": "Fecha",
+      "type": "Fecha",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 110,
+      "optionColors": {}
+    },
+    {
+      "id": "base_casilla_p3",
+      "title": "Acta enviada",
+      "savedTitle": "Acta enviada",
+      "type": "Casilla",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 90,
+      "optionColors": {},
+      "fieldKey": "casilla"
+    }
+  ],
+  "customColumns": [
+    {
+      "id": "custom_tipo_p3",
+      "title": "Tipo",
+      "savedTitle": "Tipo",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 120,
+      "optionColors": {}
+    },
+    {
+      "id": "custom_participantes_p3",
+      "title": "Participantes",
+      "savedTitle": "Participantes",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 200,
+      "optionColors": {}
+    }
+  ]
+}

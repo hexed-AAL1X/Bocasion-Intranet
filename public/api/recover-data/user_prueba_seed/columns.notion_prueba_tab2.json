@@ -1,0 +1,108 @@
+{
+  "baseColumns": [
+    {
+      "id": "base_estado_p2",
+      "title": "Estado",
+      "savedTitle": "Estado",
+      "type": "Estado",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": ["Activo", "En espera", "Cerrado", "Nuevo"],
+      "width": 110,
+      "optionColors": {
+        "Activo": "#10B981",
+        "En espera": "#F59E0B",
+        "Cerrado": "#6B7280",
+        "Nuevo": "#3B82F6"
+      },
+      "fieldKey": "base_estado_p2"
+    },
+    {
+      "id": "base_fecha_p2",
+      "title": "Fecha contacto",
+      "savedTitle": "Fecha contacto",
+      "type": "Fecha",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 120,
+      "optionColors": {}
+    }
+  ],
+  "customColumns": [
+    {
+      "id": "custom_empresa_p2",
+      "title": "Empresa",
+      "savedTitle": "Empresa",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 170,
+      "optionColors": {}
+    },
+    {
+      "id": "custom_correo_p2",
+      "title": "Correo electrónico",
+      "savedTitle": "Correo electrónico",
+      "type": "Correo electrónico",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 200,
+      "optionColors": {}
+    },
+    {
+      "id": "custom_telefono_p2",
+      "title": "Teléfono",
+      "savedTitle": "Teléfono",
+      "type": "Teléfono",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 130,
+      "optionColors": {}
+    },
+    {
+      "id": "custom_obs_p2",
+      "title": "Observaciones",
+      "savedTitle": "Observaciones",
+      "type": "Texto",
+      "hidden": false,
+      "pinned": false,
+      "fit": false,
+      "filter": false,
+      "sort": "",
+      "group": false,
+      "calculate": "",
+      "options": [],
+      "width": 240,
+      "optionColors": {}
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+.fileItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.imageBtn {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preview {
+  display: block;
+  width: 100%;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.filePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary, #0ea5e9);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 120ms ease;
+}
+
+.filePill:hover {
+  background: rgba(14, 165, 233, 0.18);
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.removeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 93, 93, 0.1);
+  color: #ff5d5d;
+  cursor: pointer;
+}
+
+.removeBtn:hover {
+  background: rgba(255, 93, 93, 0.2);
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: var(--text-dim, #5a7184);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.overlayCard {
+  max-width: min(960px, 96vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--card, #fff);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+
+.overlayHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border, #d7e8e3);
+}
+
+.overlayTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text, #1f2d3d);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.overlayActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.overlayActionBtn {
+  border: 1px solid var(--border, #d7e8e3);
+  background: var(--bg, #f8fafc);
+  color: var(--text, #1f2d3d);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.overlayActionBtn:hover {
+  border-color: var(--primary, #0ea5e9);
+  color: var(--primary, #0ea5e9);
+}
+
+.overlayClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-dim, #5a7184);
+  cursor: pointer;
+}
+
+.overlayClose:hover {
+  background: var(--bg, #f0f4f8);
+}
+
+.overlayImage {
+  max-width: 100%;
+  max-height: calc(92vh - 120px);
+  object-fit: contain;
+  background: #111;
+  margin: 0 auto;
+}
+
+.overlayHint {
+  margin: 0;
+  padding: 8px 14px 12px;
+  font-size: 11px;
+  color: var(--text-dim, #5a7184);
+  text-align: center;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.summaryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 2px 8px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--primary, #0ea5e9);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summaryPill:hover {
+  background: rgba(14, 165, 233, 0.2);
+}
+
+.summaryMore {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  color: var(--text-dim, #5a7184);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.compactImageBtn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: 6px;
+  overflow: hidden;
+  align-self: flex-start;
+}
+
+.compactThumb {
+  display: block;
+  width: 48px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border, #d7e8e3);
+}
+
+.brokenPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

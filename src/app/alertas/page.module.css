@@ -1,0 +1,195 @@
+.page {
+  --primary: #0ea5e9;
+  --accent: #f4b000;
+  --danger: #e53935;
+  --warning: #f57c00;
+  --info: #1f7aec;
+  --bg: #f4fbf9;
+  --card: #ffffff;
+  --text: #1f2d3d;
+  --text-dim: #5a7184;
+  --border: #d7e8e3;
+
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 88px 32px 32px;
+  gap: 16px;
+  overflow: visible;
+  width: 100%;
+  max-width: 1260px;
+  align-self: stretch;
+}
+
+.contentBody {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.titleBlock h1 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -0.3px;
+}
+
+.titleBlock p {
+  margin: 4px 0 0;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.subNote {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.alertGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  gap: 18px;
+  overflow: visible;
+  padding: 8px 0 24px;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: start;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.critico {
+  background: rgba(229, 57, 53, 0.12);
+  color: #c62828;
+  border-color: rgba(229, 57, 53, 0.22);
+}
+
+.alta {
+  background: rgba(245, 124, 0, 0.12);
+  color: #d85b00;
+  border-color: rgba(245, 124, 0, 0.22);
+}
+
+.media {
+  background: rgba(244, 176, 0, 0.12);
+  color: #a05a00;
+  border-color: rgba(244, 176, 0, 0.22);
+}
+
+.baja {
+  background: rgba(31, 122, 236, 0.10);
+  color: #1f7aec;
+  border-color: rgba(31, 122, 236, 0.22);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  background: rgba(0, 0, 0, 0.04);
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.description {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.helperCopy {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.loading,
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-dim);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.page.dark {
+  --bg: #101418;
+  --card: #0d1115;
+  --text: #e5ebf3;
+  --text-dim: #93a4ba;
+  --border: #1b242d;
+}
+
+.page.dark .card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.page.dark .chip {
+  background: rgba(255, 255, 255, 0.04);
+}

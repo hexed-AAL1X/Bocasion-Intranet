@@ -1,0 +1,48 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text-dim);
+  border: 1px dashed color-mix(in srgb, var(--border) 80%, var(--primary) 15%);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card) 92%, transparent);
+}
+
+.compact {
+  flex-direction: row;
+  text-align: left;
+  padding: 20px 16px;
+  gap: 14px;
+}
+
+.compact .title {
+  margin: 0 0 4px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--primary) 55%, var(--text-dim));
+}
+
+.text {
+  max-width: 44ch;
+}
+
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
