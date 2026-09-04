@@ -1,48 +1,162 @@
-Panel web en [Next.js](https://nextjs.org).
+<a id="readme-top"></a>
+<!-- SHIELDS -->
+<img src="https://github.com/AnderMendoza/AnderMendoza/raw/main/assets/line-neon.gif" width="100%">
+<p align='center'> 
+  <img alt="GitHub Repo contributors" src="https://img.shields.io/github/contributors/hexed-AAL1X/Bocasion-Intranet?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/hexed-AAL1X/Bocasion-Intranet?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/hexed-AAL1X/Bocasion-Intranet?style=for-the-badge">&nbsp;
+  <img alt="GitHub Repo issues" src="https://img.shields.io/github/issues/hexed-AAL1X/Bocasion-Intranet?style=for-the-badge">&nbsp;
+</p>
 
-## Fotos reales en el manual (`/docs`)
+<!-- PROJECT LOGO -->
+<br>
+<div align="center">
+   <img src="assets/images/logo-bocasion.png" alt="Logo" width="320">
+   <h3 align="center">BOCASIÓN — Intranet Dashboard</h3>
+   <p align="center">
+     Panel web interno de tickets, analíticas, RRHH y operaciones
+     <br>
+     <a href="https://github.com/hexed-AAL1X/Bocasion-Intranet"><strong>Explorar la documentación »</strong></a>
+     <br>
+     <br>
+     <a href="https://www.bocasion.com/out/">Ver demo</a>
+     ·
+     <a href="https://github.com/hexed-AAL1X/Bocasion-Intranet/issues/new?labels=bug&template=bug-report---.md">Reportar un bug</a>
+     ·
+     <a href="https://github.com/hexed-AAL1X/Bocasion-Intranet/issues/new?labels=enhancement&template=feature-request---.md">Pedir una mejora</a>
+   </p>
+</div>
 
-El manual carga PNG desde `public/docs/manual/screenshots/`. Por defecto las capturas se generan contra el **sitio en producción** ([dashboard publicado](https://www.bocasion.com/out/)), con datos reales y BD conectada—no hace falta tener `npm run dev` en marcha.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Tabla de contenidos</summary>
+  <ol>
+    <li>
+      <a href="#sobre-el-proyecto">Sobre el proyecto</a>
+      <ul>
+        <li>
+          <a href="#construido-con">Construido con</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#avisos-importantes">Avisos importantes</a></li>
+    <li>
+      <a href="#primeros-pasos">Primeros pasos</a>
+      <ul>
+        <li><a href="#requisitos">Requisitos</a></li>
+        <li><a href="#instalacion">Instalación</a></li>
+      </ul>
+    </li>
+    <li><a href="#contribuir">Contribuir</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ol>
+</details>
+<br>
 
-1. Una vez: `npm run docs:screenshots:install` (instala Chromium para Playwright).
-2. Exporta usuario y contraseña **del entorno que uses para entrar en https://www.bocasion.com/out/** (las mismas que definiste para ese entorno). Sin `export`, Node no las ve:
-   - `export MANUAL_SCREENSHOT_USER=tu_usuario && export MANUAL_SCREENSHOT_PASSWORD=tu_clave && npm run docs:screenshots`
-   - O en una línea: `MANUAL_SCREENSHOT_USER=… MANUAL_SCREENSHOT_PASSWORD=… npm run docs:screenshots`
-3. **Opcional:** otra URL (por ejemplo local):  
-   `export MANUAL_SCREENSHOT_BASE_URL=http://127.0.0.1:3000/out`
-4. `npm run docs:screenshots`
+<!-- ABOUT THE PROJECT -->
+<a id="sobre-el-proyecto"></a>***Sobre el proyecto***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-Los PNG se escriben en `public/docs/manual/screenshots/*.png`. Haz commit si quieres fijar esas capturas en el repo.
+<div align="center">
+  <img src="assets/images/dashboard-preview.png" alt="Bocasión Dashboard" width="100%">
+</div>
 
-**Si la página queda en blanco o el test hace timeout al cargar:** algunos hosts bloquean navegadores automatizados. Prueba con ventana visible:  
-`MANUAL_SCREENSHOT_HEADED=1 npm run docs:screenshots`  
-Si vuelve a fallar, revisa `public/docs/manual/screenshots/_debug-wait-shell.png` (se genera al timeout).
+**Bocasión Intranet** es un dashboard en Next.js para operaciones internas: tickets, analíticas, equipos, programa anual, vistas de Notion, RRHH y más — pensado para mantener a los equipos alineados con datos reales.
 
-**Seguridad:** no guardes contraseñas en archivos del proyecto; solo variables de entorno en tu máquina o CI secreto.
+Por qué existe:
 
----
+* Centraliza tickets, alertas, analíticas y flujos de RRHH en un solo lugar.
+* Builds estáticos exportables (`/out`) listos para producción.
+* Manual con capturas reales del entorno en vivo.
 
-## Getting Started
+El proyecto sigue evolucionando: espera mejoras continuas de UX y rendimiento.
 
-First, run the development server:
+<a id="construido-con"></a>
+### Construido con
+* ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)&nbsp;
+* ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)&nbsp;
+* ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)&nbsp;
+* ![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)&nbsp;
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
-```bash
-npm run dev
-```
+<!-- IMPORTANT NOTICES -->
+<a id="avisos-importantes"></a>***Avisos importantes***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> [!NOTE]  
+> Para instalar y ejecutar este dashboard, asegúrate de contar con lo siguiente:
+>
+> | Requisito          | Descripción                                                                                       |
+> |--------------------|---------------------------------------------------------------------------------------------------|
+> | Runtime            | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white&color=black) |
+> | Gestor de paquetes | ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white&color=black) |
+> | Lenguaje           | ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white&color=black) |
 
-## Learn More
+> [!IMPORTANT]\
+> Nunca subas secretos al repositorio. Los archivos `.env*` y `node_modules` están ignorados por `.gitignore`. Usa variables de entorno solo en tu máquina o como secretos de CI.
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
-To learn more about Next.js, take a look at the following resources:
+<!-- GETTING STARTED -->
+<a id="primeros-pasos"></a>***Primeros pasos***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+Estas son las instrucciones para configurar el proyecto en local. Sigue estos pasos para tener una copia funcionando.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<a id="requisitos"></a>
+### Requisitos
+* Node.js (se recomienda LTS)
+* npm
+* Git
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<a id="instalacion"></a>
+### Instalación
+_Ejemplo de cómo instalar y ejecutar el dashboard en tu máquina._
 
-## Deploy on Vercel
+1. Clona el repositorio
+   ```sh
+   git clone https://github.com/hexed-AAL1X/Bocasion-Intranet.git
+   ```
+2. Entra al directorio del proyecto
+   ```sh
+   cd Bocasion-Intranet
+   ```
+3. Instala las dependencias
+   ```sh
+   npm install
+   ```
+4. Arranca el servidor de desarrollo
+   ```sh
+   npm run dev
+   ```
+5. Abre [http://localhost:3000](http://localhost:3000) en el navegador
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. (Opcional) Cambia la URL del remoto de Git para evitar pushes accidentales al proyecto base
+   ```sh
+   git remote set-url origin https://github.com/tu_usuario/Bocasion-Intranet.git
+   git remote -v # confirma los cambios
+   ```
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<!-- CONTRIBUTING -->
+<a id="contribuir"></a>***Contribuir***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+Las contribuciones hacen de la comunidad open source un lugar increíble para aprender, inspirarse y crear. ¡Cualquier aporte es bienvenido!
+
+Si tienes una sugerencia para mejorar el proyecto, puedes hacer fork del repositorio y abrir un pull request.
+¡No olvides darle una estrella al proyecto! Gracias por contribuir.
+
+1. Haz fork del proyecto.
+2. Crea una rama para tu mejora (`git checkout -b feature/NuevaMejora`).
+3. Haz tus cambios y un commit (`git commit -m 'Add Nueva Mejora'`).
+4. Sube los cambios a la rama (`git push origin feature/NuevaMejora`).
+5. Abre un pull request.
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
+
+<!-- CONTACT -->
+<a id="contacto"></a>***Contacto***
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+<p align="center">
+  <a href="mailto:hexed_aal1x.ops@proton.me"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white&color=black" /></a>
+  <a href="https://www.instagram.com/hexed_aal1x"><img src="https://img.shields.io/badge/instagram-%2312100E.svg?&style=for-the-badge&logo=instagram&logoColor=white&color=black" /></a>
+  <a href="https://www.linkedin.com/in/leonardo-bravo-4120b8228/"><img src="https://img.shields.io/badge/linkedin-%2312100E.svg?&style=for-the-badge&logo=linkedin&logoColor=white&color=black" /></a>
+</p>
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
