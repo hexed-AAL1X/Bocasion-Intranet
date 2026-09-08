@@ -19,7 +19,6 @@ import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
 import { useCalendarToggle } from "@/contexts/CalendarToggleContext";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { usePageShell } from "@/hooks/usePageShell";
 import { useAuthSession, type UserRole } from "@/components/AuthGate";
 import type { NotionTab } from "@/hooks/useNotionTabs";

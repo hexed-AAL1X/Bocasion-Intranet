@@ -19,7 +19,6 @@ import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
 import { useCalendarToggle } from "@/contexts/CalendarToggleContext";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useAuthSession } from "@/components/AuthGate";
 import { usePageShell } from "@/hooks/usePageShell";
 import { canEditProgramaAnual } from "@/lib/roles";

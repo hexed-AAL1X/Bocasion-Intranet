@@ -58,7 +58,6 @@ import { PhoneInput } from "../../components/PhoneInput";
 import { useTasks, type Task } from "@/hooks/useTasks";
 import { useColumns, type Column } from "@/hooks/useColumns";
 import { useNotionTabs, type NotionTab } from "@/hooks/useNotionTabs";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { usePageShell } from "@/hooks/usePageShell";
 import { useAuthSession } from "@/components/AuthGate";
 import { resolveUsersApi, resolveSharesApi } from "@/utils/api";
