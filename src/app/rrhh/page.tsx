@@ -17,8 +17,9 @@ import styles from "./page.module.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { resolveRrhhApi, resolveDataPath } from "@/utils/api";
+import { cell, formatLastUpdated, formatMoney } from "@/utils/tableFormatters";
+import { usePageShell } from "@/hooks/usePageShell";
 
 type TabId = "resumen" | "colaboradores" | "directorio" | "areas" | "licencias" | "nomina";
 
@@ -47,37 +48,9 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "nomina", label: "Nómina" },
 ];
 
-function cell(v: unknown): string {
-  if (v == null || v === "") return "—";
-  if (typeof v === "number") {
-    return Number.isInteger(v) ? String(v) : v.toLocaleString("es-PE", { maximumFractionDigits: 2 });
-  }
-  return String(v);
-}
-
-function formatMoney(v: unknown): string {
-  if (v == null || v === "") return "—";
-  if (typeof v === "string" && v.includes("S/")) return v;
-  const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d.-]/g, ""));
-  if (!Number.isFinite(n)) return String(v);
-  return `S/ ${n.toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-function formatLastUpdated(iso?: string): string {
-  if (!iso) return "Sin sincronizar";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleString("es-PE", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "America/Lima",
-  });
-}
 
 export default function RrhhPage() {
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
 
   const [data, setData] = useState<RrhhData | null>(null);
   const [loading, setLoading] = useState(true);

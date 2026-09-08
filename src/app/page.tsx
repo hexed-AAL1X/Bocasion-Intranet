@@ -2,7 +2,6 @@
 
 import { useMemo, useState, useCallback, useRef, type ReactNode } from "react";
 import { resolveTicketsApi } from "@/utils/api";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useTicketsContext, type TicketRecord } from "@/contexts/TicketsContext";
 import {
   FiEdit2,
@@ -18,6 +17,7 @@ import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import { PageContent } from "../components/PageContent";
 import { EmptyState } from "../components/EmptyState";
+import { usePageShell } from "@/hooks/usePageShell";
 const API = resolveTicketsApi();
 const SNACKBAR_DURATION = 4500;
 
@@ -97,9 +97,7 @@ export default function Home() {
     }, duration);
   };
 
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const [range, setRange] = useState<RangeOption>("30d");
 
   const persist = useCallback((next: Ticket[]) => {

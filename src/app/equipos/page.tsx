@@ -18,8 +18,9 @@ import styles from "./page.module.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { resolveItEquiposApi, resolveDataPath } from "@/utils/api";
+import { cell, formatLastUpdated } from "@/utils/tableFormatters";
+import { usePageShell } from "@/hooks/usePageShell";
 
 type TabId = "inventario" | "tipos" | "locales" | "visitas" | "infra";
 
@@ -49,24 +50,6 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "infra", label: "Routers / Teléfonos" },
 ];
 
-function cell(v: unknown): string {
-  if (v == null || v === "") return "—";
-  if (typeof v === "number") {
-    return Number.isInteger(v) ? String(v) : v.toLocaleString("es-PE", { maximumFractionDigits: 2 });
-  }
-  return String(v);
-}
-
-function formatLastUpdated(iso?: string): string {
-  if (!iso) return "Sin sincronizar";
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleString("es-PE", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "America/Lima",
-  });
-}
 
 function countTipo(tipos: Record<string, number> | undefined, match: RegExp): number {
   if (!tipos) return 0;
@@ -74,9 +57,7 @@ function countTipo(tipos: Record<string, number> | undefined, match: RegExp): nu
 }
 
 export default function EquiposPage() {
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
 
   const [data, setData] = useState<ItData | null>(null);
   const [loading, setLoading] = useState(true);
