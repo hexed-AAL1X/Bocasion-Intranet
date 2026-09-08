@@ -59,6 +59,7 @@ import { useTasks, type Task } from "@/hooks/useTasks";
 import { useColumns, type Column } from "@/hooks/useColumns";
 import { useNotionTabs, type NotionTab } from "@/hooks/useNotionTabs";
 import { useUiPrefs } from "@/contexts/UiPrefsContext";
+import { usePageShell } from "@/hooks/usePageShell";
 import { useAuthSession } from "@/components/AuthGate";
 import { resolveUsersApi, resolveSharesApi } from "@/utils/api";
 import { sortRowsByStoredColumn } from "@/lib/notionColumnUtils";
@@ -275,11 +276,9 @@ function computeNotionTabHoverIndex(clientX: number, orderedIds: string[], bar: 
 }
 
 export default function NotionPage() {
-  const { collapsed, setCollapsed, sidebarRight, setSidebarRight, darkMode, setDarkMode } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const auth = useAuthSession();
   const { snackbars, showSnackbar } = useSnackbar();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const historyMeta = useMemo<HistoryUserMeta | undefined>(() => {
     if (!auth.user?.id) return undefined;
     return {

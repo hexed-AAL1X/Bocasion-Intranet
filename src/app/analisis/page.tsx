@@ -23,8 +23,8 @@ import styles from "./page.module.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useTicketsContext } from "@/contexts/TicketsContext";
+import { usePageShell } from "@/hooks/usePageShell";
 
 const CHART_IDS = ["volumen", "estado", "contacto", "owner", "motivo", "resueltos"] as const;
 type ChartId = (typeof CHART_IDS)[number];
@@ -57,9 +57,7 @@ const sanitizeChartOrder = (raw: unknown): ChartId[] => {
 };
 export default function AnalisisPage() {
   const { tickets } = useTicketsContext();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const compactDefaultOrder: ChartId[] = [...CHART_IDS];
   const [chartOrder, setChartOrder] = useState<ChartId[]>(() => {
     if (typeof window === "undefined") return compactDefaultOrder;

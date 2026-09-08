@@ -7,15 +7,13 @@ import pageStyles from "../page.module.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useSlaAlerts } from "@/hooks/useSlaAlerts";
 import { SLA_SEVERITY_COPY, type SlaSeverity } from "@/utils/slaAlerts";
 import { useState } from "react";
+import { usePageShell } from "@/hooks/usePageShell";
 
 export default function AlertasPage() {
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const { alerts, loading } = useSlaAlerts(20);
 
   const badgeClass = (severity: SlaSeverity) => {

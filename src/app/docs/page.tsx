@@ -7,7 +7,6 @@ import styles from "./page.module.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
-import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useAuthSession } from "@/components/AuthGate";
 import {
   ManualChapter,
@@ -16,12 +15,11 @@ import {
   isManualSectionVisibleForRole,
   manualTocEntriesForRole,
 } from "./manualSections";
+import { usePageShell } from "@/hooks/usePageShell";
 
 export default function DocsPage() {
   const auth = useAuthSession();
-  const { collapsed, setCollapsed, darkMode, setDarkMode, sidebarRight, setSidebarRight } = useUiPrefs();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
 
   const [activeSection, setActiveSection] = useState<ManualSectionId>("manual-intro");
   const viewerRef = useRef<HTMLDivElement>(null);

@@ -21,6 +21,7 @@ import { PageContent } from "../../components/PageContent";
 import { useCalendarToggle } from "@/contexts/CalendarToggleContext";
 import { useUiPrefs } from "@/contexts/UiPrefsContext";
 import { useAuthSession } from "@/components/AuthGate";
+import { usePageShell } from "@/hooks/usePageShell";
 import { canEditProgramaAnual } from "@/lib/roles";
 import { resolveProgramaAnualApi } from "@/utils/api";
 
@@ -2016,10 +2017,8 @@ function AlertasPanel({
 export default function ProgramaAnualPage() {
   const { role } = useAuthSession();
   const canEdit = canEditProgramaAnual(role);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings]           = useState(false);
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const { showCalendar } = useCalendarToggle();
-  const { darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = useUiPrefs();
 
   const [actividades, setActividades] = useState<Actividad[]>([]);
   const [loading, setLoading]         = useState(true);

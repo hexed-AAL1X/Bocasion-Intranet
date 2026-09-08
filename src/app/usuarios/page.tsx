@@ -20,6 +20,7 @@ import { Header } from "../../components/Header";
 import { PageContent } from "../../components/PageContent";
 import { useCalendarToggle } from "@/contexts/CalendarToggleContext";
 import { useUiPrefs } from "@/contexts/UiPrefsContext";
+import { usePageShell } from "@/hooks/usePageShell";
 import { useAuthSession, type UserRole } from "@/components/AuthGate";
 import type { NotionTab } from "@/hooks/useNotionTabs";
 import { getAutoIdValue, getIdColumnLabel, isAutoIdColumn, sortRowsByStoredColumn } from "@/lib/notionColumnUtils";
@@ -314,11 +315,9 @@ const ROLE_LABELS: Record<UserRole, string> = { user: "Usuario", admin: "Admin",
 const ROLE_COLORS: Record<UserRole, string> = { user: "#3B82F6", admin: "#F59E0B", dev: "#10B981" };
 
 export default function UsuariosPage() {
-  const { collapsed, setCollapsed, sidebarRight, setSidebarRight, darkMode, setDarkMode } = useUiPrefs();
+  const { showNotifications, setShowNotifications, showSettings, setShowSettings, darkMode, setDarkMode, sidebarRight, setSidebarRight, collapsed, setCollapsed } = usePageShell();
   const { setShowCalendar } = useCalendarToggle();
   const auth = useAuthSession();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
